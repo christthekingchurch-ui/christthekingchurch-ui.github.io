@@ -148,7 +148,7 @@ export const History: React.FC = () => {
             <div className="history-stat-item">
               <Cross size={24} className="text-accent" />
               <div>
-                <h4 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>12+</h4>
+                <h4 style={{ fontSize: '2rem', fontWeight: 800, margin: 0, color: 'var(--text-primary)' }}>13+</h4>
                 <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
                   {language === 'ta' ? 'அமைப்புகள்' : 'Organizations'}
                 </span>
