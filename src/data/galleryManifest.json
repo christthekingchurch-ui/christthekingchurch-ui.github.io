@@ -3,13 +3,55 @@
     "year": "2023",
     "folder": "Mother Mary Feast (15-08-2023)",
     "images": [
-      "1.JPG",
-      "2.JPG",
-      "3.JPG",
-      "4.JPG",
-      "5.JPG",
-      "6.JPG",
-      "7.JPG"
+      "_DSC1302.JPG",
+      "_DSC1313.JPG",
+      "_DSC1315.JPG",
+      "_DSC1321.JPG",
+      "_DSC1348.JPG",
+      "_DSC1354.JPG",
+      "_DSC1359.JPG",
+      "_DSC1362.JPG",
+      "_DSC1400.JPG",
+      "_DSC1401.JPG",
+      "_DSC1403.JPG",
+      "_DSC1425.JPG",
+      "_DSC1431.JPG",
+      "_DSC1523.JPG",
+      "_DSC1526.JPG",
+      "_DSC1544.JPG",
+      "_DSC1564.JPG",
+      "_DSC1571.JPG",
+      "_DSC1621.JPG"
+    ]
+  },
+  {
+    "year": "2023",
+    "folder": "Plantation Day (20-08-2023)",
+    "images": [
+      "_DSC1650.JPG",
+      "_DSC1654.JPG",
+      "_DSC1662.JPG",
+      "_DSC1666.JPG",
+      "_DSC1667.JPG",
+      "_DSC1673.JPG",
+      "_DSC1679.JPG",
+      "_DSC1687.JPG",
+      "_DSC1696.JPG",
+      "_DSC1698.JPG",
+      "_DSC1705.JPG"
+    ]
+  },
+  {
+    "year": "2023",
+    "folder": "Uravin Sangaman (31-12-2023)",
+    "images": [
+      "IMG20231231091133.jpg",
+      "IMG20231231091137.jpg",
+      "IMG_0338.jpg",
+      "IMG_0339.jpg",
+      "IMG_0340.jpg",
+      "IMG_0343.jpg",
+      "IMG_0354.jpg"
     ]
   },
   {
@@ -17,6 +59,22 @@
     "folder": "Christmas (25-12-2024)",
     "images": [
       "1.JPG"
+    ]
+  },
+  {
+    "year": "2024",
+    "folder": "Kinder Garden Boundary Wall (01-09-2024)",
+    "images": [
+      "IMG20240901162745.jpg",
+      "IMG20240901162746.jpg",
+      "IMG20240901162757.jpg",
+      "IMG20240901162757_01.jpg",
+      "IMG20240901162845.jpg",
+      "IMG20240901182255.jpg",
+      "IMG20240901182259.jpg",
+      "IMG20240901182300.jpg",
+      "IMG20240901182313.jpg",
+      "IMG20240901182500.jpg"
     ]
   },
   {
@@ -29,7 +87,98 @@
       "4.JPG",
       "5.JPG",
       "6.JPG",
-      "7.JPG"
+      "7.JPG",
+      "IMG20240815170838.jpg",
+      "IMG20240815214644.jpg"
+    ]
+  },
+  {
+    "year": "2024",
+    "folder": "Onam Celebration (15-09-2024)",
+    "images": [
+      "IMG20240915041042.jpg",
+      "IMG20240915041044.jpg",
+      "IMG20240915084500.jpg",
+      "IMG20240915084517.jpg",
+      "IMG20240915084930.jpg",
+      "IMG20240915085008.jpg",
+      "IMG20240915085105.jpg",
+      "IMG20240915085124.jpg",
+      "IMG20240915085230.jpg",
+      "IMG20240915085240.jpg",
+      "IMG20240915085642.jpg",
+      "IMG20240915085653.jpg"
+    ]
+  },
+  {
+    "year": "2024",
+    "folder": "Site Visit (14-07-2024)",
+    "images": [
+      "IMG20240714132228.jpg",
+      "IMG20240714132235.jpg",
+      "IMG20240714132349.jpg",
+      "IMG20240714132351.jpg",
+      "IMG20240714132409.jpg"
+    ]
+  },
+  {
+    "year": "2024",
+    "folder": "Uravin Sangamam (31-12-2025)",
+    "images": [
+      "IMG_6790.JPG",
+      "IMG_6795.JPG",
+      "IMG_6807.JPG",
+      "IMG_6819.JPG",
+      "IMG_6829.JPG",
+      "IMG_6863.JPG",
+      "IMG_6867.JPG",
+      "IMG_6917.JPG",
+      "IMG_6925.JPG",
+      "IMG_6943.JPG",
+      "IMG_6955.JPG",
+      "IMG_7154.JPG",
+      "IMG_7155.JPG",
+      "IMG_7225.JPG",
+      "IMG_7237.JPG",
+      "IMG_7954.JPG",
+      "IMG_7959.JPG",
+      "IMG_8204.JPG",
+      "IMG_8216.JPG"
+    ]
+  },
+  {
+    "year": "2024",
+    "folder": "Youth Day Celebration (04-08-2024)",
+    "images": [
+      "IMG20240804113231.jpg",
+      "IMG20240804113238.jpg",
+      "IMG20240804113239.jpg",
+      "IMG20240804113253.jpg",
+      "IMG20240804113343.jpg",
+      "IMG20240804113347.jpg",
+      "IMG20240804113350.jpg"
+    ]
+  },
+  {
+    "year": "2025",
+    "folder": "Christmas (25-12-2025)",
+    "images": [
+      "IMG_1617.jpg",
+      "IMG_1619.jpg",
+      "IMG_1621.jpg",
+      "IMG_1624.jpg",
+      "IMG_1629.jpg",
+      "IMG_1630.jpg",
+      "IMG_1631.jpg"
+    ]
+  },
+  {
+    "year": "2025",
+    "folder": "Kinder Garden Begining (26-01-2025)",
+    "images": [
+      "IMG20250126130107.jpg",
+      "IMG20250126130120.jpg",
+      "IMG20250126130124.jpg"
     ]
   },
   {
@@ -37,6 +186,63 @@
     "folder": "Mother Mary Feast (15-08-2025)",
     "images": [
       "3.JPG"
+    ]
+  },
+  {
+    "year": "2025",
+    "folder": "Vacation Bible Class 2025 (05-05-2025)",
+    "images": [
+      "IMG20250505092412.jpg",
+      "IMG20250505093304.jpg",
+      "IMG20250505093306.jpg",
+      "IMG20250506091441.jpg",
+      "IMG20250506094019.jpg",
+      "IMG20250506095558.jpg",
+      "IMG20250507092407.jpg"
+    ]
+  },
+  {
+    "year": "2025",
+    "folder": "Vazhum Kudhil (23-12-2025)",
+    "images": [
+      "IMG_0852.JPG",
+      "IMG_0855.JPG",
+      "IMG_0877.JPG",
+      "IMG_0878.JPG",
+      "IMG_0881.JPG",
+      "IMG_0900.JPG",
+      "IMG_1011.JPG",
+      "IMG_1033.JPG",
+      "IMG_1082.JPG",
+      "IMG_1121.JPG",
+      "IMG_1140.JPG",
+      "IMG_1204.JPG",
+      "IMG_1273.JPG",
+      "IMG_1306.JPG",
+      "IMG_1319.JPG"
+    ]
+  },
+  {
+    "year": "2025",
+    "folder": "Vincente Paul Special Mass (14-12-2025)",
+    "images": [
+      "IMG_0529.JPG",
+      "IMG_0530.JPG",
+      "IMG_0547.JPG",
+      "IMG_0616.JPG",
+      "IMG_0624.JPG",
+      "IMG_0641.JPG",
+      "IMG_0643.JPG",
+      "IMG_0696.JPG",
+      "IMG_0697.JPG",
+      "IMG_0702.JPG",
+      "IMG_0703.JPG",
+      "IMG_0705.JPG",
+      "IMG_0708.JPG",
+      "IMG_0714.JPG",
+      "IMG_0722.JPG",
+      "IMG_0723.JPG",
+      "IMG_0724.JPG"
     ]
   }
 ]

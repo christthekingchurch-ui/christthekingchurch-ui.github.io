@@ -41,8 +41,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPage, onNavigate }) => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const hasDarkHero = ['priests', 'history'].includes(currentPage);
+
   return (
-    <nav className={`header-nav ${isScrolled ? 'scrolled' : ''}`}>
+    <nav className={`header-nav ${isScrolled ? 'scrolled' : ''} ${hasDarkHero ? 'dark-hero-nav' : ''}`}>
       <div className="container nav-container">
         {/* Logo Section */}
         <div className="nav-logo" onClick={() => handleNavClick('home')}>

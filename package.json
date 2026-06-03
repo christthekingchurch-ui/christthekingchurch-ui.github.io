@@ -16,8 +16,7 @@
     "lucide-react": "^1.17.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-leaflet": "^5.0.0",
-    "three": "^0.184.0"
+    "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -26,7 +25,6 @@
     "@types/node": "^24.12.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.184.1",
     "@vitejs/plugin-react": "^6.0.1",
     "@xmldom/xmldom": "^0.9.10",
     "eslint": "^10.3.0",

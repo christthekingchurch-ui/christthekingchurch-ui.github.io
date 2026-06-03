@@ -1371,3 +1371,693 @@ a {
     margin-left: 70px !important;
   }
 }
+
+/* ════════════════════════════════════════════════════ */
+/* REDESIGNED PRIESTS PAGE                            */
+/* ════════════════════════════════════════════════════ */
+
+/* ─── Priests Hero ─── */
+.priests-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.priests-hero-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1a0a2e 0%, #0f172a 40%, #0c1220 100%);
+  z-index: 0;
+}
+
+.priests-hero-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(ellipse at center, rgba(249, 115, 22, 0.08) 0%, transparent 65%);
+  animation: priestsHeroPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes priestsHeroPulse {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.6; }
+  100% { transform: scale(1.15) translate(5%, -5%); opacity: 1; }
+}
+
+.priests-hero-gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent 40%, var(--bg-primary) 100%);
+}
+
+/* ─── Current Priest Spotlight ─── */
+.current-priest-spotlight {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.current-priest-portrait {
+  display: flex;
+  justify-content: center;
+}
+
+.current-priest-portrait-wrapper {
+  position: relative;
+  padding: 4px;
+}
+
+.current-priest-portrait-frame {
+  position: relative;
+  width: 280px;
+  height: 350px;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.current-priest-portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.current-priest-portrait-frame:hover img {
+  transform: scale(1.05);
+}
+
+/* Glow ring is now on the WRAPPER, outside overflow:hidden */
+.current-priest-glow-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(var(--radius-xl) + 2px);
+  border: 3px solid var(--accent);
+  pointer-events: none;
+  z-index: 1;
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.25), inset 0 0 20px rgba(249, 115, 22, 0.1);
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(249, 115, 22, 0.25), inset 0 0 20px rgba(249, 115, 22, 0.1); }
+  50% { box-shadow: 0 0 30px rgba(249, 115, 22, 0.4), inset 0 0 25px rgba(249, 115, 22, 0.15); }
+}
+
+.priest-meta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-full);
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.25);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.current-priest-stats {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.current-priest-stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .current-priest-spotlight {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .current-priest-portrait-frame {
+    width: 220px;
+    height: 280px;
+  }
+
+  .current-priest-stats {
+    justify-content: center;
+  }
+
+  .priest-meta-badge {
+    font-size: 0.8rem;
+  }
+}
+
+/* ─── Priests Timeline (Past Priests) ─── */
+.priests-timeline {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+.priests-timeline-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  background: linear-gradient(to bottom, transparent, var(--accent) 15%, var(--accent) 85%, transparent);
+  transform: translateX(-50%);
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+.priests-timeline-item {
+  position: relative;
+  display: flex;
+  margin-bottom: 3.5rem;
+  width: 100%;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.priests-timeline-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Alternate using explicit class, NOT nth-child (avoids line-sibling offset) */
+.priests-timeline-item--left {
+  flex-direction: row-reverse;
+}
+
+.priests-timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Node circle on the timeline */
+.priests-timeline-node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 3px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.3);
+  transition: all 0.3s ease;
+}
+
+.priests-timeline-node-year {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent);
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.priests-timeline-item:hover .priests-timeline-node {
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 0 25px rgba(249, 115, 22, 0.5);
+  background: rgba(249, 115, 22, 0.08);
+}
+
+/* Card positioning — default: right side */
+.priests-timeline-content {
+  width: 44%;
+  margin-left: auto;
+}
+
+/* Explicit class for left-side cards */
+.priests-timeline-item--left .priests-timeline-content {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* The card itself */
+.priests-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.priests-card:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: var(--shadow-xl), 0 0 20px rgba(249, 115, 22, 0.08);
+}
+
+.priests-card-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.priests-card-photo {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-secondary);
+}
+
+.priests-card-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.priests-card:hover .priests-card-photo img {
+  transform: scale(1.05);
+}
+
+.priests-card-details {
+  padding: 1.5rem;
+}
+
+.priests-card-year-badge {
+  display: inline-block;
+  padding: 0.25rem 0.85rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(249, 115, 22, 0.05));
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.6rem;
+  border: 1px solid rgba(249, 115, 22, 0.25);
+}
+
+.priests-card-name {
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.priests-card-ordination {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+
+.priests-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ─── Mobile responsive ─── */
+@media (max-width: 768px) {
+  .priests-timeline-line {
+    left: 24px;
+  }
+
+  .priests-timeline-node {
+    left: 24px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .priests-timeline-item:hover .priests-timeline-node {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .priests-timeline-item,
+  .priests-timeline-item--left {
+    flex-direction: row !important;
+  }
+
+  .priests-timeline-content {
+    width: calc(100% - 60px);
+    margin-left: 60px !important;
+    margin-right: 0 !important;
+  }
+
+  .priests-card-photo {
+    height: 180px;
+  }
+}
+
+/* ─── Navbar Dark Hero Overrides ─── */
+.header-nav.dark-hero-nav:not(.scrolled) .nav-logo-text,
+.header-nav.dark-hero-nav:not(.scrolled) .nav-link,
+.header-nav.dark-hero-nav:not(.scrolled) .menu-toggle {
+  color: #ffffff;
+}
+
+.header-nav.dark-hero-nav:not(.scrolled) .nav-link:hover,
+.header-nav.dark-hero-nav:not(.scrolled) .nav-link.active {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.header-nav.dark-hero-nav:not(.scrolled) .btn-lang {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.header-nav.dark-hero-nav:not(.scrolled) .btn-lang:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ─── Light mode fixes for Priests ─── */
+[data-theme="light"] .priests-timeline-node {
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1), 0 0 12px rgba(249, 115, 22, 0.2);
+}
+
+[data-theme="light"] .priests-card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .priests-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 0 15px rgba(249, 115, 22, 0.08);
+}
+
+[data-theme="light"] .priests-timeline-line {
+  opacity: 0.6;
+}
+
+[data-theme="light"] .current-priest-portrait-frame {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .current-priest-stat {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+
+/* ════════════════════════════════════════════════════ */
+/* REDESIGNED HISTORY PAGE ENHANCEMENTS               */
+/* ════════════════════════════════════════════════════ */
+
+/* ─── Hero Mesh Overlay ─── */
+.history-hero-mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(249, 115, 22, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 40%);
+  animation: meshFloat 10s ease-in-out infinite alternate;
+}
+
+@keyframes meshFloat {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ─── Stats Bar ─── */
+.history-stats-bar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-glass);
+  border-top: 1px solid var(--border-glass);
+  padding: 2.5rem 0;
+  position: relative;
+  z-index: 5;
+  backdrop-filter: blur(16px);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.history-stats-bar.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.history-stats-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.history-stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.history-stat-divider {
+  width: 1px;
+  height: 48px;
+  background: var(--border-glass);
+}
+
+@media (max-width: 768px) {
+  .history-stats-grid {
+    gap: 1.5rem;
+  }
+  .history-stat-divider {
+    display: none;
+  }
+  .history-stat-item h4 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* ─── Scroll Reveal Sections ─── */
+.history-intro-grid,
+.history-facts-grid,
+.history-grotto-grid,
+.history-assoc-grid {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.history-intro-grid.revealed,
+.history-facts-grid.revealed,
+.history-grotto-grid.revealed,
+.history-assoc-grid.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Reuse the grid layout definitions */
+.history-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 3rem;
+  align-items: stretch;
+}
+
+.history-facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+}
+
+.history-grotto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+}
+
+.history-assoc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ─── Fact Row ─── */
+.history-fact-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 0.75rem;
+  transition: background 0.2s ease;
+}
+
+.history-fact-row:hover {
+  background: rgba(249, 115, 22, 0.03);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  margin: -0.5rem;
+  padding-bottom: 0.75rem;
+}
+
+.history-fact-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.history-fact-value {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: right;
+  max-width: 60%;
+}
+
+/* ─── Mass Time Card ─── */
+.history-mass-time-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-primary);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+  transition: border-color 0.3s ease;
+}
+
+.history-mass-time-card:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+}
+
+/* ─── Landmark Cards ─── */
+.history-landmark-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+  transition: all 0.3s ease;
+}
+
+.history-landmark-card:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+  transform: translateX(4px);
+}
+
+.history-landmark-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: rgba(249, 115, 22, 0.1);
+  flex-shrink: 0;
+}
+
+/* ─── Vocation Item ─── */
+.history-vocation-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-dark);
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-glass);
+  transition: all 0.3s ease;
+}
+
+.history-vocation-item:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+  transform: translateX(4px);
+}
+
+.history-vocation-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* ─── Festival Card ─── */
+.history-festival-card {
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.06) 0%, var(--bg-card) 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.15) !important;
+}
+
+.history-festival-icon-wrapper {
+  display: inline-flex;
+  padding: 1rem;
+  background: rgba(249, 115, 22, 0.15);
+  border-radius: 50%;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  animation: sparkleFloat 3s ease-in-out infinite;
+}
+
+@keyframes sparkleFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-6px) rotate(5deg); }
+}
+
+/* ─── Association Card ─── */
+.history-assoc-card {
+  background: var(--bg-primary) !important;
+  border: 1px solid var(--border-glass) !important;
+  transition: all 0.3s ease !important;
+}
+
+.history-assoc-card:hover {
+  border-color: rgba(249, 115, 22, 0.3) !important;
+  transform: translateY(-3px);
+}
+
+.history-assoc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: rgba(249, 115, 22, 0.1);
+  flex-shrink: 0;
+}
+
+/* ─── Timeline reveal animation ─── */
+.premium-timeline-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-timeline-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Text accent utility */
+.text-accent {
+  color: var(--accent);
+}
+
+/* Background dark fallback */
+.bg-dark, [class*="bg-dark"] {
+  background-color: var(--bg-secondary);
+}

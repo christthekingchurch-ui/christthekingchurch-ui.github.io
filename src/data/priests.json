@@ -2,22 +2,71 @@
   {
     "id": 1,
     "name": "Fr. D.M. Sujan Kumar",
+    "nameTa": "அருட்பணி. டி.எம். சுஜன் குமார்",
     "years": "2002 - 2005",
-    "photoPath": "/images/priests/default-priest.jpg",
-    "description": "The first parish priest of Iruthyapuram who laid the foundation for our modern community."
+    "dateofordination": "08.12.1995",
+    "photoPath": "/images/Priest/Fr._Sujan_Kumar_D_M.jpg",
+    "description": "The first parish priest of Iruthyapuram who laid the foundation for our modern community when it was erected as an independent parish in 2002.",
+    "descriptionTa": "2002-ல் இருதயபுரம் தனிப்பங்காக உயர்த்தப்பட்டபோது, அதன் முதல் பங்குத்தந்தையாகப் பொறுப்பேற்று, நவீன சமூகத்திற்கான அடித்தளத்தை அமைத்தார்."
   },
   {
     "id": 2,
-    "name": "Fr. John Doe",
-    "years": "2005 - 2012",
-    "photoPath": "/images/priests/default-priest.jpg",
-    "description": "Guided the parish through the construction of the new church building."
+    "name": "Fr. R. Paul Richard Joseph",
+    "nameTa": "அருட்பணி. ஆர். பால் ரிச்சர்ட் ஜோசப்",
+    "years": "2005 - 2011",
+    "dateofordination": "08.12.1995",
+    "photoPath": "/images/Priest/Fr_Paul_Richard_Joseph_R.jpg",
+    "description": "Led the parish through the construction of the grand new church building, which was blessed in 2009. He also built the entrance arch, parish priest house, and decorated the church floor.",
+    "descriptionTa": "இவரது பணிக்காலத்தில் பங்கு மக்களின் பேராதரவோடு புதிய பேராலயம் கட்டப்பட்டு 2009-ல் அர்ச்சிக்கப்பட்டது. நுழைவு வாயில் வளைவு, பங்குத்தந்தை இல்லம் மற்றும் ஆலய மொசைக் தரைத்தளம் ஆகியவற்றை அமைத்தார்."
   },
   {
     "id": 3,
-    "name": "Fr. Current Priest",
-    "years": "2012 - Present",
-    "photoPath": "/images/priests/default-priest.jpg",
-    "description": "Currently serving the Iruthyapuram community with dedication and faith."
+    "name": "Fr. Isaac Raj",
+    "nameTa": "அருட்பணி. ஐசக் ராஜ்",
+    "years": "2011 - 2015",
+    "dateofordination": "08.12.1995",
+    "photoPath": "/images/Priest/Fr_Isaac_Raj_R.jpg",
+    "description": "Faithfully served the parish community, focusing on spiritual growth, pastoral programs, and youth development during his tenure.",
+    "descriptionTa": "தனது பணிக்காலத்தில் ஆன்மீக வளர்ச்சி, மேய்ப்புப்பணி திட்டங்கள் மற்றும் இளைஞர் மேம்பாடு ஆகியவற்றில் கவனம் செலுத்தி, பங்கு சமூகத்திற்கு அர்ப்பணிப்புடன் பணியாற்றினார்."
+  },
+  {
+    "id": 4,
+    "name": "Fr. Antony Celestine Jeyabalan A",
+    "nameTa": "அருட்பணி. ஆண்டனி செல்வ சீலர் ஜெயபாலன்",
+    "dateofordination": "08.12.1995",
+    "years": "2018 - 2022",
+    "photoPath": "/images/Priest/Fr_Antony_Celestine_Jeyabalan_A.jpg",
+    "description": "Served the main parish of Iruthyapuram and oversaw the Mannanvilai sub-station, fostering unity and community service.",
+    "descriptionTa": "இருதயபுரம் பங்கில் பணியாற்றியதுடன், அதன் கிளைப்பங்கான மண்ணான்விளையிலும் ஆன்மீகப் பணியாற்றி, சமூக ஒற்றுமையையும் சேவையையும் வளர்த்தார்."
+  },
+  {
+    "id": 5,
+    "name": "Fr. Mary John",
+    "nameTa": "அருட்பணி. மேரி ஜாண்",
+    "dateofordination": "08.12.1995",
+    "years": "2022 - 2023",
+    "photoPath": "/images/Priest/Fr_Mary_John_R.jpg",
+    "description": "Guided the parish community through spiritual activities and social welfare programs, helping the families in the parish.",
+    "descriptionTa": "ஆன்மீகச் செயல்பாடுகள் மற்றும் சமூக நலத்திட்டங்கள் மூலம் பங்கு சமூகத்தை வழிநடத்தி, பல்வேறு எளிய குடும்பங்களின் வளர்ச்சிக்கு உதவினார்."
+  },
+  {
+    "id": 6,
+    "name": "Fr. Leo Alex",
+    "nameTa": "அருட்பணி. லியோ அலெக்ஸ்",
+    "years": "2023 - 2024",
+    "dateofordination": "08.12.1995",
+    "photoPath": "/images/Priest/Fr_Leo_Alex_A.jpg",
+    "description": "Served the Iruthyapuram community with dedication and faith, continuing the legacy of spiritual and social development.",
+    "descriptionTa": "இருதயபுரம் பங்குத்தந்தையாகத் தனது அர்ப்பணிப்புள்ள சேவையின் மூலம் ஆன்மீக மற்றும் சமூக வளர்ச்சிப் பணிகளை முன்னெடுத்து வழிநடத்தினார்."
+  },
+  {
+    "id": 7,
+    "name": "Fr. Augustine P.",
+    "nameTa": "அருட்பணி. அகஸ்டின் P.",
+    "years": "2024 - Present",
+    "dateofordination": "08.12.1995",
+    "photoPath": "/images/Priest/fr_Augustine_P.jpg",
+    "description": "Currently serving the Iruthyapuram community with dedication and faith, focusing on spiritual renewal, community growth, and guiding the parishioners.",
+    "descriptionTa": "தற்போது இருதயபுரம் பங்குத்தந்தையாகப் பொறுப்பேற்று, ஆன்மீகப் புதுப்பித்தல், சமூக வளர்ச்சி மற்றும் விசுவாசப் பாதையில் பங்கு மக்களை வழிநடத்தி வருகிறார்."
   }
 ]
