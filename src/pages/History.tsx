@@ -67,7 +67,7 @@ export const History: React.FC = () => {
             position: 'absolute', inset: 0, zIndex: 0,
             backgroundImage: `url(${heroBg})`,
             backgroundSize: 'cover', backgroundPosition: 'center',
-            filter: 'brightness(0.25) contrast(1.2) saturate(0.8)'
+            filter: 'brightness(var(--hero-img-brightness, 0.25)) contrast(1.2) saturate(0.8)'
           }}
         />
         {/* Animated gradient mesh overlay */}
@@ -75,7 +75,7 @@ export const History: React.FC = () => {
         <div
           style={{
             position: 'absolute', inset: 0, zIndex: 1,
-            background: 'linear-gradient(to bottom, transparent 0%, var(--bg-dark) 100%)'
+            background: 'linear-gradient(to bottom, transparent 0%, var(--bg-primary) 100%)'
           }}
         />
 
