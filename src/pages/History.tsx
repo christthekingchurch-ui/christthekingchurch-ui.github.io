@@ -61,7 +61,7 @@ export const History: React.FC = () => {
   return (
     <div>
       {/* ═══════ IMMERSIVE HERO WITH PARALLAX ═══════ */}
-      <section className="history-hero" style={{ position: 'relative', overflow: 'hidden' }}>
+      <section className="history-hero">
         <div
           style={{
             position: 'absolute', inset: 0, zIndex: 0,
@@ -79,7 +79,7 @@ export const History: React.FC = () => {
           }}
         />
 
-        <div className="container" style={{ position: 'relative', zIndex: 2, padding: '10rem 0 6rem 0', textAlign: 'center', maxWidth: '900px' }}>
+        <div className="container history-hero-content">
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: '0.75rem',
             padding: '0.5rem 1.25rem', borderRadius: 'var(--radius-full)',
@@ -414,7 +414,7 @@ export const History: React.FC = () => {
                   key={index}
                   ref={registerRef(`timeline-${index}`)}
                   data-section-id={`timeline-${index}`}
-                  className={`premium-timeline-item ${visibleSections.has(`timeline-${index}`) ? 'revealed' : ''}`}
+                  className={`premium-timeline-item ${index % 2 === 1 ? 'premium-timeline-item--left' : ''} ${visibleSections.has(`timeline-${index}`) ? 'revealed' : ''}`}
                 >
                   {/* Glowing Node Icon in the center */}
                   <div className="premium-timeline-node">
