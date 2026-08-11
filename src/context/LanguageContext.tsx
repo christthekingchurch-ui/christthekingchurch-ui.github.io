@@ -229,14 +229,22 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
-    const saved = localStorage.getItem('church_lang');
-    return (saved === 'ta' || saved === 'en') ? saved : 'en';
+    try {
+      const saved = localStorage.getItem('church_lang');
+      return (saved === 'ta' || saved === 'en') ? saved : 'en';
+    } catch {
+      return 'en';
+    }
   });
 
   const toggleLanguage = () => {
     setLanguage(prev => {
       const next = prev === 'en' ? 'ta' : 'en';
-      localStorage.setItem('church_lang', next);
+      try {
+        localStorage.setItem('church_lang', next);
+      } catch {
+        // ignore storage errors
+      }
       return next;
     });
   };

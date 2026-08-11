@@ -13,39 +13,31 @@ export const FolderGallery: React.FC<FolderGalleryProps> = ({ year, folderKey, o
   const { t } = useLanguage();
   const [activePhotoIndex, setActivePhotoIndex] = useState<number | null>(null);
 
-  // Retrieve folder config
   const folder = galleryData[year]?.[folderKey];
 
-  // Handle keyboard events when lightbox is active
   useEffect(() => {
     if (activePhotoIndex === null || !folder) return;
-
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setActivePhotoIndex(null);
-      } else if (e.key === 'ArrowRight') {
-        setActivePhotoIndex((prev) => 
-          prev !== null ? (prev + 1) % folder.images.length : null
-        );
-      } else if (e.key === 'ArrowLeft') {
-        setActivePhotoIndex((prev) => 
-          prev !== null ? (prev - 1 + folder.images.length) % folder.images.length : null
-        );
-      }
+      if (e.key === 'Escape') setActivePhotoIndex(null);
+      else if (e.key === 'ArrowRight') setActivePhotoIndex(prev => prev !== null ? (prev + 1) % folder.images.length : null);
+      else if (e.key === 'ArrowLeft') setActivePhotoIndex(prev => prev !== null ? (prev - 1 + folder.images.length) % folder.images.length : null);
     };
-
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = ''; };
   }, [activePhotoIndex, folder]);
 
   if (!folder) {
     return (
-      <div style={{ padding: '8rem 0' }} className="container text-center">
-        <div className="card" style={{ maxWidth: '600px', margin: '0 auto', padding: '3rem' }}>
-          <AlertCircle size={48} className="text-accent" style={{ color: 'var(--accent)', marginBottom: '1.5rem' }} />
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>Gallery Not Found</h2>
-          <p style={{ marginBottom: '2rem' }}>The requested gallery folder does not exist or has been removed.</p>
-          <button className="btn btn-primary" onClick={() => onNavigate('gallery')}>
+      <div className="min-h-screen bg-ivory-50 dark:bg-charcoal-800 flex items-center justify-center p-6">
+        <div className="text-center max-w-lg">
+          <AlertCircle size={48} className="text-charcoal-300 mx-auto mb-6" />
+          <h2 className="text-3xl font-serif text-charcoal-700 dark:text-ivory-100 mb-4">Gallery Not Found</h2>
+          <p className="text-charcoal-400 dark:text-charcoal-300 mb-8">The requested gallery folder does not exist or has been removed.</p>
+          <button
+            className="bg-gold-400 hover:bg-gold-500 text-white px-8 py-3 text-sm font-semibold uppercase tracking-[0.15em] transition-all"
+            onClick={() => onNavigate('gallery')}
+          >
             {t('backToGalleryBtn')}
           </button>
         </div>
@@ -55,143 +47,102 @@ export const FolderGallery: React.FC<FolderGalleryProps> = ({ year, folderKey, o
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setActivePhotoIndex((prev) => 
-      prev !== null ? (prev - 1 + folder.images.length) % folder.images.length : null
-    );
+    setActivePhotoIndex(prev => prev !== null ? (prev - 1 + folder.images.length) % folder.images.length : null);
   };
-
   const handleNext = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setActivePhotoIndex((prev) => 
-      prev !== null ? (prev + 1) % folder.images.length : null
-    );
+    setActivePhotoIndex(prev => prev !== null ? (prev + 1) % folder.images.length : null);
   };
 
   return (
-    <div>
+    <div className="bg-ivory-50 dark:bg-charcoal-800 min-h-screen">
+
       {/* Header Banner */}
-      <section 
-        className="section" 
-        style={{ 
-          padding: '8rem 0 3rem 0',
-          background: 'var(--gradient-hero)',
-          borderBottom: '1px solid var(--border-glass)'
-        }}
-      >
-        <div className="container">
-          <button 
+      <section className="relative h-[55vh] min-h-[380px] flex items-end overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${folder.imagePaths[0] || '/images/hero-bg1.jpg'})`, filter: 'brightness(0.35)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 z-10" />
+        <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-10 pb-14 w-full">
+          <button
             onClick={() => onNavigate('gallery')}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--text-secondary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              cursor: 'pointer',
-              fontWeight: 500,
-              fontSize: '1rem',
-              marginBottom: '1.5rem',
-              transition: 'color var(--transition-base)'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.color = 'white'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-secondary)'}
+            className="flex items-center gap-2 text-white/80 hover:text-white transition-colors font-medium text-sm mb-6 group"
           >
-            <ArrowLeft size={16} />
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
             {t('backToGalleryBtn')}
           </button>
 
-          <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{folder.displayName}</h1>
-          <p style={{ color: 'var(--text-muted)' }}>
-            {year} • {folder.description}
-          </p>
+          <span className="glass-pill text-gold-300 text-[11px] font-sans font-semibold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full mb-3 inline-block">
+            {year} • {folder.imagePaths.length} photos
+          </span>
+          <h1 className="text-white max-w-3xl mb-2">{folder.displayName}</h1>
+          {folder.description && (
+            <p className="text-white/80 text-base max-w-2xl">{folder.description}</p>
+          )}
         </div>
       </section>
 
-      {/* Grid of Images */}
-      <section className="section">
-        <div className="container">
+      {/* Grid */}
+      <section className="py-12">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10">
           {folder.images.length === 0 ? (
-            <div className="card text-center" style={{ padding: '4rem 2rem' }}>
-              <p>{t('noImagesMsg')}</p>
+            <div className="text-center py-24 text-charcoal-300">
+              <p className="text-base font-medium">{t('noImagesMsg')}</p>
             </div>
           ) : (
-            <div 
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: '1.5rem'
-              }}
-            >
-              {folder.imagePaths.map((imgPath, index) => {
-                return (
-                  <div 
-                    key={index} 
-                    className="gallery-card"
-                    onClick={() => setActivePhotoIndex(index)}
-                    style={{ aspectRatio: '4/3' }}
-                  >
-                    <img 
-                      src={imgPath} 
-                      alt={`${folder.displayName} - ${index + 1}`}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                      onError={(e) => {
-                        e.currentTarget.src = '/images/logo.png';
-                        e.currentTarget.style.padding = '20px';
-                        e.currentTarget.style.objectFit = 'contain';
-                        e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
-                      }}
-                    />
-                  </div>
-                );
-              })}
+            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+              {folder.imagePaths.map((imgPath, index) => (
+                <div
+                  key={index}
+                  className="group relative break-inside-avoid overflow-hidden cursor-pointer"
+                  onClick={() => setActivePhotoIndex(index)}
+                >
+                  <img
+                    src={imgPath}
+                    alt={`${folder.displayName} - ${index + 1}`}
+                    className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.src = '/images/logo.png';
+                      e.currentTarget.className = 'w-full h-auto object-contain p-8 bg-ivory-100';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-all duration-500" />
+                </div>
+              ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox */}
       {activePhotoIndex !== null && (
-        <div className="lightbox" onClick={() => setActivePhotoIndex(null)}>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            {/* Close Button */}
-            <button className="lightbox-close" onClick={() => setActivePhotoIndex(null)}>
-              <X size={32} />
-            </button>
+        <div className="fixed inset-0 z-[100] bg-charcoal-900/98 flex flex-col items-center justify-center" onClick={() => setActivePhotoIndex(null)}>
+          <button className="absolute top-6 right-6 text-white/50 hover:text-white p-2 transition-colors" onClick={() => setActivePhotoIndex(null)}>
+            <X size={28} />
+          </button>
 
-            {/* Navigation Arrows */}
-            {folder.images.length > 1 && (
-              <>
-                <button className="lightbox-nav lightbox-prev" onClick={handlePrev}>
-                  <ChevronLeft size={28} />
-                </button>
-                <button className="lightbox-nav lightbox-next" onClick={handleNext}>
-                  <ChevronRight size={28} />
-                </button>
-              </>
-            )}
+          {folder.images.length > 1 && (
+            <>
+              <button className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors" onClick={handlePrev}>
+                <ChevronLeft size={32} />
+              </button>
+              <button className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors" onClick={handleNext}>
+                <ChevronRight size={32} />
+              </button>
+            </>
+          )}
 
-            {/* Image display */}
-            <img 
-              className="lightbox-img"
+          <div className="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
+            <img
+              className="max-w-full max-h-[80vh] object-contain"
               src={folder.imagePaths[activePhotoIndex]}
-              alt={`${folder.displayName} - Large ${activePhotoIndex + 1}`}
-              onError={(e) => {
-                e.currentTarget.src = '/images/logo.png';
-                e.currentTarget.style.padding = '40px';
-                e.currentTarget.style.objectFit = 'contain';
-                e.currentTarget.style.background = 'white';
-              }}
+              alt={`${folder.displayName} - ${activePhotoIndex + 1}`}
+              onError={(e) => { e.currentTarget.src = '/images/logo.png'; }}
             />
-
-            {/* Bottom Caption indicator */}
-            <div style={{
-              textAlign: 'center',
-              marginTop: '1rem',
-              color: 'var(--text-secondary)',
-              fontSize: '0.95rem'
-            }}>
-              {folder.displayName} ({activePhotoIndex + 1} / {folder.images.length})
+            <div className="mt-4 text-white/50 text-sm">
+              {folder.displayName} <span className="text-white/30 ml-2">{activePhotoIndex + 1} / {folder.images.length}</span>
             </div>
           </div>
         </div>

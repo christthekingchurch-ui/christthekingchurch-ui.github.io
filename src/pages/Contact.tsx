@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
-import { ThreeDTilt } from '../components/ThreeDTilt';
-import { MapPin, PhoneCall, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { MapPin, PhoneCall, Clock, Send, CheckCircle2, MessageCircle } from 'lucide-react';
 
 export const Contact: React.FC = () => {
   const { t } = useLanguage();
@@ -12,14 +11,10 @@ export const Contact: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
       setFormData({ name: '', email: '', message: '' });
-
-      // Reset success message after 5 seconds
       setTimeout(() => setIsSuccess(false), 5000);
     }, 1200);
   };
@@ -30,202 +25,132 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section 
-        className="section text-center" 
-        style={{ 
-          padding: '8rem 0 4rem 0',
-          background: 'var(--gradient-hero)',
-          borderBottom: '1px solid var(--border-glass)'
-        }}
-      >
-        <div className="container" style={{ maxWidth: '800px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(249, 115, 22, 0.15)', color: 'var(--accent)', marginBottom: '1.5rem' }}>
-            <PhoneCall size={28} />
-          </div>
-          <h1 style={{ fontSize: '3rem', marginBottom: '1rem' }}>{t('contactHeroTitle')}</h1>
-          <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)' }}>
+    <div className="bg-ivory-50 dark:bg-charcoal-800 min-h-screen">
+
+      {/* ═══════ HERO ═══════ */}
+      <section className="relative h-[60vh] min-h-[420px] flex items-end overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(/images/hero-bg1.jpg)`, filter: 'brightness(0.35)' }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 z-10" />
+        <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-10 pb-16 w-full">
+          <span className="glass-pill text-gold-300 text-[11px] font-sans font-semibold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full mb-3 inline-block">
+            Reach Out
+          </span>
+          <h1 className="text-white max-w-3xl">{t('contactHeroTitle')}</h1>
+          <p className="text-white/80 text-lg max-w-2xl mt-4 leading-relaxed">
             {t('contactHeroDescription')}
           </p>
         </div>
       </section>
 
-      {/* Info Cards Section */}
-      <section className="section">
-        <div className="container">
-          <div className="grid grid-2">
-            {/* Contact Details Card */}
-            <ThreeDTilt className="card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(59, 130, 246, 0.15)', color: '#3b82f6', flexShrink: 0 }}>
-                  <PhoneCall size={24} />
-                </div>
-                <div>
-                  <h4 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Call Us</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1.1rem' }}>04651-243375</p>
-                </div>
-              </div>
+      {/* ═══════ MAP + DETAILS ═══════ */}
+      <section className="py-24">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-0">
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(34, 197, 94, 0.15)', color: '#22c55e', flexShrink: 0 }}>
-                  <MapPin size={24} />
-                </div>
-                <div>
-                  <h4 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Address</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1.1rem' }}>Christ the King Church,<br/>Iruthyapuram, Kerala, India</p>
-                </div>
-              </div>
+          {/* Map */}
+          <div className="h-[450px] lg:h-auto overflow-hidden rounded-3xl border border-charcoal-100 dark:border-charcoal-700 shadow-lg">
+            <iframe
+              src="https://maps.google.com/maps?q=Christ+The+King+Church+Irruthayapuram+(Roman+Catholic)&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-700"
+              allowFullScreen={true}
+              loading="lazy"
+            ></iframe>
+          </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '48px', height: '48px', borderRadius: '50%', background: 'rgba(249, 115, 22, 0.15)', color: '#f97316', flexShrink: 0 }}>
-                  <Clock size={24} />
-                </div>
-                <div>
-                  <h4 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Working Hours</h4>
-                  <p style={{ fontWeight: 600, fontSize: '1.1rem', marginBottom: '0.2rem' }}>Sunday Mass: 8:00 AM</p>
-                  <p style={{ color: 'var(--text-secondary)' }}>Evening Prayer: 6:00 PM<br/>Bible Study: Wed 7:00 PM</p>
-                </div>
+          {/* Contact Details */}
+          <div className="lg:pl-16 flex flex-col justify-center gap-10">
+            <div className="flex items-start gap-5">
+              <PhoneCall size={22} className="text-gold-500 mt-1 shrink-0" />
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-400 font-bold mb-1">Call Us</p>
+                <p className="text-charcoal-700 dark:text-ivory-100 text-lg font-semibold">04651-243375</p>
               </div>
-              
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', flexWrap: 'wrap' }}>
-                <a 
-                  href="https://share.google/mBA5gLBNpQcTqJ6iv" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn btn-secondary" 
-                  style={{ flex: '1 1 140px', display: 'flex', justifyContent: 'center', gap: '0.5rem', alignItems: 'center', padding: '0.75rem' }}
-                >
-                  <MapPin size={18} />
-                  <span>Get Directions</span>
-                </a>
-                <a 
-                  href="https://wa.me/9104651243375" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="btn" 
-                  style={{ flex: '1 1 140px', display: 'flex', justifyContent: 'center', gap: '0.5rem', alignItems: 'center', background: '#075E54', color: 'white', padding: '0.75rem', border: 'none' }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
-                  <span>WhatsApp</span>
-                </a>
-              </div>
-            </ThreeDTilt>
+            </div>
 
-            {/* Map Embed Card */}
-            <ThreeDTilt className="card" style={{ padding: '0', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-              <iframe 
-                src="https://maps.google.com/maps?q=Christ+The+King+Church+Irruthayapuram+(Roman+Catholic)&t=&z=15&ie=UTF8&iwloc=&output=embed" 
-                width="100%" 
-                height="100%" 
-                style={{ border: 0, minHeight: '350px', flex: 1 }} 
-                allowFullScreen={true} 
-                loading="lazy"
-              ></iframe>
-              <div style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-card)', borderTop: '1px solid var(--border-glass)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <div style={{ display: 'flex', gap: '0.25rem', color: '#fbbf24', marginBottom: '0.25rem' }}>
-                    {[1,2,3,4,5].map(i => <svg key={i} width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>)}
-                  </div>
-                  <p style={{ margin: 0, fontSize: '0.9rem', fontWeight: 600 }}>Google Reviews</p>
-                </div>
-                <div style={{ display: 'flex', gap: '0.75rem' }}>
-                  <a href="https://www.instagram.com/christthekingchurchiru/" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)', color: 'white', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                  </a>
-                  <a href="https://www.youtube.com/@ChristTheKingChurchIru" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', borderRadius: '50%', background: '#ff0000', color: 'white', transition: 'transform 0.2s' }} onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'} onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
-                  </a>
-                </div>
+            <div className="flex items-start gap-5">
+              <MapPin size={22} className="text-gold-500 mt-1 shrink-0" />
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-400 font-bold mb-1">Address</p>
+                <p className="text-charcoal-700 dark:text-ivory-100 font-semibold">Christ the King Church,<br/>Iruthyapuram, Kerala, India</p>
               </div>
-            </ThreeDTilt>
+            </div>
+
+            <div className="flex items-start gap-5">
+              <Clock size={22} className="text-gold-500 mt-1 shrink-0" />
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-400 font-bold mb-1">Mass Schedule</p>
+                <p className="text-charcoal-700 dark:text-ivory-100 font-semibold mb-1">Sunday: 8:00 AM</p>
+                <p className="text-charcoal-500 dark:text-charcoal-300 text-sm">Evening Prayer: 6:00 PM • Bible Study: Wed 7:00 PM</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4 pt-4">
+              <a href="https://share.google/mBA5gLBNpQcTqJ6iv" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 px-6 py-3 border border-charcoal-100 dark:border-charcoal-600 text-charcoal-600 dark:text-charcoal-200 text-sm font-semibold hover:border-gold-400 hover:text-gold-600 transition-all"
+              >
+                <MapPin size={16} /> Directions
+              </a>
+              <a href="https://wa.me/9104651243375" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1da851] transition-all"
+              >
+                <MessageCircle size={16} /> WhatsApp
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Form Section */}
-      <section className="section section-dark">
-        <div className="container" style={{ maxWidth: '650px' }}>
-          <h2 className="section-title text-center">
-            <span>{t('formTitle')}</span>
-          </h2>
+      {/* ═══════ FORM ═══════ */}
+      <section className="py-24 bg-ivory-100 dark:bg-charcoal-900">
+        <div className="max-w-2xl mx-auto px-6">
+          <div className="glass-card p-8 md:p-12 rounded-3xl">
+            <div className="text-center mb-12">
+              <span className="glass-pill text-gold-500 text-[11px] font-sans font-semibold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full mb-4 inline-block">
+                Message
+              </span>
+              <h2 className="text-charcoal-700 dark:text-ivory-100">{t('formTitle')}</h2>
+            </div>
 
-          <ThreeDTilt className="card" style={{ padding: '2.5rem 3rem', marginTop: '2rem' }}>
-            {isSuccess && (
-              <div style={{ 
-                background: 'rgba(34, 197, 94, 0.15)',
-                border: '1px solid rgba(34, 197, 94, 0.3)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1rem 1.5rem',
-                marginBottom: '1.5rem',
-                color: '#4ade80',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem'
-              }}>
-                <CheckCircle2 size={20} />
-                <span>{t('formSuccessMsg')}</span>
-              </div>
-            )}
+          {isSuccess && (
+            <div className="flex items-center gap-3 p-5 mb-8 border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-lg">
+              <CheckCircle2 size={20} />
+              <span className="font-medium text-sm">{t('formSuccessMsg')}</span>
+            </div>
+          )}
 
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label className="form-label">{t('formNameLabel')}</label>
-                <input 
-                  type="text" 
-                  name="name" 
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required 
-                  className="form-control"
-                  placeholder="John Doe"
-                />
-              </div>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+            <div>
+              <label className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-3 block">{t('formNameLabel')}</label>
+              <input
+                type="text" name="name" value={formData.name} onChange={handleInputChange} required
+                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors placeholder:text-charcoal-200 dark:placeholder:text-charcoal-500"
+                placeholder="John Doe"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-3 block">{t('formEmailLabel')}</label>
+              <input
+                type="email" name="email" value={formData.email} onChange={handleInputChange} required
+                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors placeholder:text-charcoal-200 dark:placeholder:text-charcoal-500"
+                placeholder="john@example.com"
+              />
+            </div>
+            <div>
+              <label className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-3 block">{t('formMessageLabel')}</label>
+              <textarea
+                name="message" value={formData.message} onChange={handleInputChange} rows={4} required
+                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors resize-none placeholder:text-charcoal-200 dark:placeholder:text-charcoal-500"
+                placeholder="Your message or prayer request..."
+              />
+            </div>
 
-              <div className="form-group">
-                <label className="form-label">{t('formEmailLabel')}</label>
-                <input 
-                  type="email" 
-                  name="email" 
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required 
-                  className="form-control"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">{t('formMessageLabel')}</label>
-                <textarea 
-                  name="message" 
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows={5} 
-                  required 
-                  className="form-control"
-                  placeholder="Your message or prayer request..."
-                  style={{ resize: 'vertical' }}
-                />
-              </div>
-
-              <button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="btn btn-primary" 
-                style={{ width: '100%', marginTop: '1rem', display: 'flex', justifyContent: 'center' }}
-              >
-                {isSubmitting ? (
-                  <span>Sending...</span>
-                ) : (
-                  <>
-                    <Send size={18} />
-                    <span>{t('formSubmitBtn')}</span>
-                  </>
-                )}
-              </button>
-            </form>
-          </ThreeDTilt>
+            <button
+              type="submit" disabled={isSubmitting}
+              className="self-start flex items-center gap-3 bg-gold-400 hover:bg-gold-500 disabled:bg-charcoal-200 text-white px-10 py-4 text-sm font-semibold uppercase tracking-[0.15em] transition-all duration-300 mt-4"
+            >
+              {isSubmitting ? 'Sending...' : <><Send size={16} /> {t('formSubmitBtn')}</>}
+            </button>
+          </form>
+          </div>
         </div>
       </section>
     </div>

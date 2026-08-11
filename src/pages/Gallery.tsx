@@ -20,20 +20,10 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
   const [lightboxImages, setLightboxImages] = useState<FlatImage[]>([]);
 
-  // Unique years for filter tabs
   const years = ['all', ...Array.from(new Set(folders.map(f => f.year))).sort((a, b) => b.localeCompare(a))];
+  const filteredImages = activeYear === 'all' ? allImages : allImages.filter(img => img.year === activeYear);
+  const filteredFolders = activeYear === 'all' ? folders : folders.filter(f => f.year === activeYear);
 
-  // Filtered images for "all photos" view
-  const filteredImages = activeYear === 'all'
-    ? allImages
-    : allImages.filter(img => img.year === activeYear);
-
-  // Filtered folders
-  const filteredFolders = activeYear === 'all'
-    ? folders
-    : folders.filter(f => f.year === activeYear);
-
-  // Lightbox keyboard controls
   useEffect(() => {
     if (lightboxIdx === null) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -43,63 +33,68 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
     };
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
-    };
+    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = ''; };
   }, [lightboxIdx, lightboxImages]);
 
-  // Open lightbox for a specific set of images
   const openLightbox = useCallback((images: FlatImage[], startIdx: number) => {
     setLightboxImages(images);
     setLightboxIdx(startIdx);
   }, []);
 
-  // Open lightbox for a folder
   const openFolderLightbox = useCallback((year: string, folderKey: string, imgIdx: number) => {
     const folder = galleryData[year]?.[folderKey];
     if (!folder) return;
     const imgs: FlatImage[] = folder.imagePaths.map((path, i) => ({
-      src: path,
-      alt: `${folder.displayName} - ${i + 1}`,
-      year,
-      folder: folderKey,
+      src: path, alt: `${folder.displayName} - ${i + 1}`, year, folder: folderKey,
     }));
     openLightbox(imgs, imgIdx);
   }, [openLightbox]);
 
   return (
-    <div>
+    <div className="bg-ivory-50 dark:bg-charcoal-800 min-h-screen">
+
       {/* ═══════ HERO ═══════ */}
-      <section className="gallery-hero">
-        <div 
-          className="gallery-hero-bg" 
-          style={{ backgroundImage: `url(${folders[0]?.imagePaths[0] || '/images/hero-bg1.jpg'})` }} 
-        />
-        <div className="gallery-hero-overlay" />
-        <div className="gallery-hero-content">
-          <div className="gallery-hero-badge"><Image size={20} /> Gallery</div>
-          <h1>{t('galleryPageTitle') || 'Gallery'}</h1>
-          <p>{t('galleryPageDesc')}</p>
+      <section className="relative h-[60vh] min-h-[420px] flex items-end overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${folders[0]?.imagePaths[0] || '/images/hero-bg1.jpg'})`, filter: 'brightness(0.35)' }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 z-10" />
+        <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-10 pb-16 w-full">
+          <span className="glass-pill text-gold-300 text-[11px] font-sans font-semibold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full mb-3 inline-block">
+            Portfolio & Memories
+          </span>
+          <h1 className="text-white max-w-3xl">{t('galleryPageTitle') || 'Gallery'}</h1>
+          <p className="text-white/80 text-lg max-w-2xl mt-4 leading-relaxed">
+            {t('galleryPageDesc') || 'Explore the wonderful moments captured in the life of Christ the King Church, Iruthyapuram.'}
+          </p>
         </div>
       </section>
 
       {/* ═══════ TOOLBAR ═══════ */}
-      <section className="gallery-toolbar">
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          {/* View mode toggle */}
-          <div className="gallery-view-toggle">
-            <button className={viewMode === 'folders' ? 'active' : ''} onClick={() => setViewMode('folders')}>
+      <section className="sticky top-[78px] z-30 glass-nav py-4">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex flex-col md:flex-row justify-between items-center gap-4">
+          {/* View toggle */}
+          <div className="flex border border-charcoal-100 dark:border-charcoal-600 rounded-lg overflow-hidden">
+            <button
+              className={`flex items-center gap-2 px-5 py-2 text-sm font-medium transition-all ${viewMode === 'folders' ? 'bg-charcoal-700 text-white dark:bg-charcoal-600' : 'text-charcoal-400 hover:text-charcoal-700 dark:hover:text-ivory-100'}`}
+              onClick={() => setViewMode('folders')}
+            >
               <FolderOpen size={16} /> Folders
             </button>
-            <button className={viewMode === 'all' ? 'active' : ''} onClick={() => setViewMode('all')}>
+            <button
+              className={`flex items-center gap-2 px-5 py-2 text-sm font-medium transition-all ${viewMode === 'all' ? 'bg-charcoal-700 text-white dark:bg-charcoal-600' : 'text-charcoal-400 hover:text-charcoal-700 dark:hover:text-ivory-100'}`}
+              onClick={() => setViewMode('all')}
+            >
               <Grid3x3 size={16} /> All Photos
             </button>
           </div>
-          {/* Year filter pills */}
-          <div className="gallery-year-pills">
+
+          {/* Year pills */}
+          <div className="flex flex-wrap justify-center gap-2">
             {years.map(y => (
-              <button key={y} className={activeYear === y ? 'active' : ''} onClick={() => setActiveYear(y)}>
+              <button
+                key={y}
+                className={`px-4 py-1.5 text-[13px] font-medium transition-all border ${activeYear === y ? 'bg-charcoal-700 border-charcoal-700 text-white dark:bg-gold-600 dark:border-gold-600' : 'border-charcoal-100 dark:border-charcoal-600 text-charcoal-400 hover:border-gold-400'}`}
+                onClick={() => setActiveYear(y)}
+              >
                 {y === 'all' ? 'All Years' : y}
               </button>
             ))}
@@ -107,71 +102,67 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
         </div>
       </section>
 
-      {/* ═══════ MAIN GALLERY CONTENT ═══════ */}
-      <section className="section" style={{ paddingTop: '2rem' }}>
-        <div className="container">
+      {/* ═══════ GALLERY CONTENT ═══════ */}
+      <section className="py-12">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-10">
           {viewMode === 'folders' ? (
-            /* ──── FOLDER VIEW ──── */
             filteredFolders.length === 0 ? (
-              <div className="gallery-empty">
-                <FolderOpen size={48} />
-                <p>{t('noGalleriesMsg')}</p>
+              <div className="flex flex-col items-center justify-center py-24 text-charcoal-300">
+                <FolderOpen size={48} className="mb-4 opacity-40" />
+                <p className="text-base font-medium">{t('noGalleriesMsg')}</p>
               </div>
             ) : (
-              <div className="gallery-folders-list">
-                {filteredFolders.map((folder) => {
-                  return (
-                    <div key={`${folder.year}-${folder.folderKey}`} className="gallery-folder-section">
-                      {/* Folder header */}
-                      <div className="gallery-folder-header">
-                        <div>
-                          <h2 style={{ fontSize: '1.6rem', marginBottom: '0.25rem' }}>{folder.displayName}</h2>
-                          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-                            {folder.year} · {folder.imagePaths.length} photos · {folder.description}
-                          </p>
-                        </div>
-                      </div>
-                      {/* Image grid for this folder */}
-                      <div className="gallery-masonry">
-                        {folder.imagePaths.map((src, imgIdx) => {
-                          return (
-                            <div
-                              key={imgIdx}
-                              className="gallery-masonry-item"
-                              onClick={() => openFolderLightbox(folder.year, folder.folderKey, imgIdx)}
-                            >
-                              <img src={src} alt={`${folder.displayName} ${imgIdx + 1}`} loading="lazy" />
-                              <div className="gallery-masonry-hover">
-                                <ZoomIn size={24} />
-                              </div>
-                            </div>
-                          );
-                        })}
+              <div className="flex flex-col gap-20">
+                {filteredFolders.map((folder) => (
+                  <div key={`${folder.year}-${folder.folderKey}`}>
+                    <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between border-b border-charcoal-50 dark:border-charcoal-700 pb-4">
+                      <div>
+                        <h2 className="text-2xl font-serif text-charcoal-700 dark:text-ivory-100 mb-1">{folder.displayName}</h2>
+                        <p className="text-charcoal-300 dark:text-charcoal-400 text-sm flex items-center gap-3">
+                          <span className="text-gold-500 font-semibold">{folder.year}</span>
+                          <span>•</span>
+                          <span>{folder.imagePaths.length} photos</span>
+                          {folder.description && <><span>•</span><span>{folder.description}</span></>}
+                        </p>
                       </div>
                     </div>
-                  );
-                })}
+                    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+                      {folder.imagePaths.map((src, imgIdx) => (
+                        <div
+                          key={imgIdx}
+                          className="group relative break-inside-avoid overflow-hidden cursor-pointer"
+                          onClick={() => openFolderLightbox(folder.year, folder.folderKey, imgIdx)}
+                        >
+                          <img src={src} alt={`${folder.displayName} ${imgIdx + 1}`} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center">
+                            <div className="bg-white/20 backdrop-blur-sm p-3 rounded-full text-white opacity-0 group-hover:opacity-100 scale-75 group-hover:scale-100 transition-all duration-500">
+                              <ZoomIn size={22} />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
               </div>
             )
           ) : (
-            /* ──── ALL PHOTOS VIEW ──── */
             filteredImages.length === 0 ? (
-              <div className="gallery-empty">
-                <Image size={48} />
-                <p>{t('noImagesMsg')}</p>
+              <div className="flex flex-col items-center justify-center py-24 text-charcoal-300">
+                <Image size={48} className="mb-4 opacity-40" />
+                <p className="text-base font-medium">{t('noImagesMsg')}</p>
               </div>
             ) : (
-              <div className="gallery-masonry">
+              <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
                 {filteredImages.map((img, idx) => (
                   <div
                     key={idx}
-                    className="gallery-masonry-item"
+                    className="group relative break-inside-avoid overflow-hidden cursor-pointer"
                     onClick={() => openLightbox(filteredImages, idx)}
                   >
-                    <img src={img.src} alt={img.alt} loading="lazy" />
-                    <div className="gallery-masonry-hover">
-                      <ZoomIn size={24} />
-                      <span className="gallery-masonry-tag">{img.folder} · {img.year}</span>
+                    <img src={img.src} alt={img.alt} className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.03]" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-5">
+                      <span className="text-white text-sm font-medium">{img.folder} • {img.year}</span>
                     </div>
                   </div>
                 ))}
@@ -183,45 +174,49 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
 
       {/* ═══════ LIGHTBOX ═══════ */}
       {lightboxIdx !== null && lightboxImages.length > 0 && (
-        <div className="lightbox" onClick={() => setLightboxIdx(null)}>
-          <div className="lightbox-content" onClick={e => e.stopPropagation()}>
-            <button className="lightbox-close" onClick={() => setLightboxIdx(null)}><X size={28} /></button>
+        <div className="fixed inset-0 z-[100] bg-charcoal-900/98 flex flex-col items-center justify-center" onClick={() => setLightboxIdx(null)}>
+          <button className="absolute top-6 right-6 text-white/50 hover:text-white p-2 transition-colors" onClick={() => setLightboxIdx(null)}>
+            <X size={28} />
+          </button>
 
-            {lightboxImages.length > 1 && (
-              <>
-                <button className="lightbox-nav lightbox-prev" onClick={e => { e.stopPropagation(); setLightboxIdx(prev => prev !== null ? (prev - 1 + lightboxImages.length) % lightboxImages.length : null); }}>
-                  <ChevronLeft size={28} />
-                </button>
-                <button className="lightbox-nav lightbox-next" onClick={e => { e.stopPropagation(); setLightboxIdx(prev => prev !== null ? (prev + 1) % lightboxImages.length : null); }}>
-                  <ChevronRight size={28} />
-                </button>
-              </>
-            )}
+          {lightboxImages.length > 1 && (
+            <>
+              <button
+                className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors"
+                onClick={e => { e.stopPropagation(); setLightboxIdx(prev => prev !== null ? (prev - 1 + lightboxImages.length) % lightboxImages.length : null); }}
+              >
+                <ChevronLeft size={32} />
+              </button>
+              <button
+                className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors"
+                onClick={e => { e.stopPropagation(); setLightboxIdx(prev => prev !== null ? (prev + 1) % lightboxImages.length : null); }}
+              >
+                <ChevronRight size={32} />
+              </button>
+            </>
+          )}
 
-            <img className="lightbox-img" src={lightboxImages[lightboxIdx].src} alt={lightboxImages[lightboxIdx].alt} />
-
-            <div className="lightbox-caption">
+          <div className="relative max-w-[90vw] max-h-[85vh] flex flex-col items-center" onClick={e => e.stopPropagation()}>
+            <img className="max-w-full max-h-[78vh] object-contain" src={lightboxImages[lightboxIdx].src} alt={lightboxImages[lightboxIdx].alt} />
+            <div className="mt-4 text-white/60 text-sm text-center">
               {lightboxImages[lightboxIdx].alt}
-              <span style={{ opacity: 0.6, marginLeft: '0.5rem' }}>
-                ({lightboxIdx + 1} / {lightboxImages.length})
-              </span>
+              <span className="ml-3 text-white/30">{lightboxIdx + 1} / {lightboxImages.length}</span>
             </div>
-
-            {/* Thumbnail strip */}
-            {lightboxImages.length > 1 && (
-              <div className="lightbox-thumbs">
-                {lightboxImages.map((img, i) => (
-                  <button
-                    key={i}
-                    className={`lightbox-thumb ${i === lightboxIdx ? 'active' : ''}`}
-                    onClick={(e) => { e.stopPropagation(); setLightboxIdx(i); }}
-                  >
-                    <img src={img.src} alt="" />
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
+
+          {lightboxImages.length > 1 && (
+            <div className="absolute bottom-6 max-w-full px-6 overflow-x-auto flex gap-2 no-scrollbar" onClick={e => e.stopPropagation()}>
+              {lightboxImages.map((img, i) => (
+                <button
+                  key={i}
+                  className={`shrink-0 w-14 h-14 overflow-hidden border-2 transition-all ${i === lightboxIdx ? 'border-gold-400 opacity-100' : 'border-transparent opacity-40 hover:opacity-80'}`}
+                  onClick={() => setLightboxIdx(i)}
+                >
+                  <img src={img.src} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
