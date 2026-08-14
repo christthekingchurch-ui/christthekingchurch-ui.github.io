@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useLanguage } from '../context/LanguageContext';
-import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/languageContextValue';
+import { useTheme } from '../context/themeContextValue';
 import { Globe, Menu, X, Sun, Moon } from 'lucide-react';
 
 interface NavbarProps {

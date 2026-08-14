@@ -11,7 +11,17 @@ export interface AssociationItem {
   nameTa: string;
 }
 
+/** One line of the parish mass schedule. Rendered by History, Contact and the Footer. */
+export interface MassScheduleItem {
+  label: string;
+  labelTa: string;
+  time: string;
+  timeTa: string;
+}
+
 export interface HistoryData {
+  /** Year the parish community was founded — single source for every "Est." mention on the site. */
+  foundedYear: string;
   location: string;
   locationTa: string;
   postOffice: string;
@@ -28,10 +38,8 @@ export interface HistoryData {
   substationTa: string;
   families: number;
   anbiyams: number;
-  sundayMass: string;
-  sundayMassTa: string;
-  weekdayMass: string;
-  weekdayMassTa: string;
+  /** Single source of truth for mass timings across the whole site. */
+  massSchedule: MassScheduleItem[];
   festival: string;
   festivalTa: string;
   route: string;
@@ -50,6 +58,7 @@ export interface HistoryData {
 }
 
 export const historyData: HistoryData = {
+  foundedYear: "1943",
   location: "Iruthyapuram",
   locationTa: "இருதயபுரம்",
   postOffice: "Kulapuram P.O.",
@@ -66,10 +75,12 @@ export const historyData: HistoryData = {
   substationTa: "தூய மரியன்னை ஆலயம், மண்ணான்விளை",
   families: 284,
   anbiyams: 10,
-  sundayMass: "09:15 AM",
-  sundayMassTa: "காலை 09:15 மணி",
-  weekdayMass: "07:00 AM",
-  weekdayMassTa: "காலை 07:00 மணி",
+  massSchedule: [
+    { label: "Sunday Mass", labelTa: "ஞாயிறு திருப்பலி", time: "9:30 AM", timeTa: "காலை 9:30 மணி" },
+    { label: "Second Saturday (monthly)", labelTa: "மாதம் இரண்டாம் சனிக்கிழமை", time: "7:00 PM", timeTa: "மாலை 7:00 மணி" },
+    { label: "Third Friday (monthly)", labelTa: "மாதம் மூன்றாம் வெள்ளிக்கிழமை", time: "7:00 PM", timeTa: "மாலை 7:00 மணி" },
+    { label: "All other days", labelTa: "மற்ற நாட்களில்", time: "7:00 AM", timeTa: "காலை 7:00 மணி" },
+  ],
   festival: "5 days around the Feast of Christ the King in November",
   festivalTa: "நவம்பர் மாதம் கிறிஸ்து அரசர் விழாவை ஒட்டிய ஐந்து நாட்கள்",
   route: "Iruthyapuram is located in the Cheruvarakonam area on the Kaliyakkavilai - Kollamcode road.",
@@ -107,7 +118,7 @@ export const historyData: HistoryData = {
   
   timeline: [
     {
-      year: "1945",
+      year: "1943",
       event: "First Thatched Church & Substation Established",
       eventTa: "கிளைப்பங்கு மற்றும் முதல் ஓலைக்குடிசை ஆலயம்",
       description: "Functioned as a substation of Siluvaipuram parish. Under the leadership of Rev. Fr. Porgio, a church was started in a thatched hut with about 25 families.",

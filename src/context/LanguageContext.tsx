@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { LanguageContext, type Language } from './languageContextValue';
 
-export type Language = 'en' | 'ta';
+
+export type TranslationValue = string | Array<Record<string, string>>;
 
 interface TranslationData {
-  [key: string]: any;
+  [key: string]: TranslationValue;
 }
 
 const translations: Record<Language, TranslationData> = {
@@ -37,7 +39,7 @@ const translations: Record<Language, TranslationData> = {
     // Services Section
     servicesTitle: "Our Services",
     sundayMassTitle: "Sunday Mass",
-    sundayMassText: "Join us every Sunday at 8:00 AM for Holy Mass. Experience the presence of God in our beautiful sanctuary.",
+    sundayMassText: "Join us every Sunday at 9:30 AM for Holy Mass. Experience the presence of God in our beautiful sanctuary.",
     bibleStudyTitle: "Bible Study",
     bibleStudyText: "Deepen your understanding of God's word through our weekly Bible study sessions.",
     sundaySchoolTitle: "Sunday School",
@@ -64,8 +66,6 @@ const translations: Record<Language, TranslationData> = {
 
     quickFactsTitle: "Quick Facts & Profile",
     massTimesTitle: "Mass Timings",
-    sundayMassLabel: "Sunday Mass",
-    weekdayMassLabel: "Weekday Mass",
     associationsTitle: "Parish Associations & Organisations",
     vocationsTitle: "Vocations from Our Soil",
     grottosSchoolTitle: "Shrines & Education",
@@ -86,11 +86,11 @@ const translations: Record<Language, TranslationData> = {
     contactHeroTitle: "Get in Touch",
     contactHeroDescription: "We'd love to hear from you. Reach out for any inquiries or prayer requests.",
     addressTitle: "Address",
-    addressText: "Christ the King Church, Iruthyapuram, Kerala, India",
+    addressText: "Christ the King Church, Iruthyapuram, Kulapuram P.O., Kanyakumari District, Tamil Nadu, India",
     contactDetailsTitle: "Contact Details",
     contactDetailsText: "Phone: 04651-243375\nEmail: contact@christthekingchurch.com",
     serviceTimesTitle: "Service Times",
-    serviceTimesText: "Sunday Mass: 8:00 AM\nEvening Prayer: 6:00 PM\nBible Study: Wed 7:00 PM",
+    serviceTimesText: "Sunday Mass: 9:30 AM\nSecond Saturday (monthly): 7:00 PM\nThird Friday (monthly): 7:00 PM\nAll other days: 7:00 AM",
     formTitle: "Send Us a Message",
     formNameLabel: "Your Name",
     formEmailLabel: "Email Address",
@@ -111,6 +111,7 @@ const translations: Record<Language, TranslationData> = {
     noGalleriesMsg: "No galleries available yet.",
     noImagesMsg: "No images found in this folder.",
     backToGalleryBtn: "Back to Gallery",
+    viewAlbumBtn: "View Album",
   },
   ta: {
     // Navbar
@@ -142,7 +143,7 @@ const translations: Record<Language, TranslationData> = {
     // Services Section
     servicesTitle: "எங்கள் சேவைகள்",
     sundayMassTitle: "ஞாயிறு திருப்பலி",
-    sundayMassText: "ஒவ்வொரு ஞாயிற்றுக்கிழமையும் காலை 8:00 மணிக்கு திருப்பலியில் எங்களுடன் இணையுங்கள். எழில்மிகு ஆலயத்தில் இறைவனின் பிரசன்னத்தை உணருங்கள்.",
+    sundayMassText: "ஒவ்வொரு ஞாயிற்றுக்கிழமையும் காலை 9:30 மணிக்கு திருப்பலியில் எங்களுடன் இணையுங்கள். எழில்மிகு ஆலயத்தில் இறைவனின் பிரசன்னத்தை உணருங்கள்.",
     bibleStudyTitle: "விவிலிய படிப்பு",
     bibleStudyText: "எங்கள் வாராந்திர விவிலிய படிப்பு அமர்வுகள் மூலம் இறைவனின் வார்த்தையை இன்னும் ஆழமாகப் புரிந்து கொள்ளுங்கள்.",
     sundaySchoolTitle: "மறைக்கல்வி பள்ளி",
@@ -169,8 +170,6 @@ const translations: Record<Language, TranslationData> = {
 
     quickFactsTitle: "பங்கு விவரங்கள் மற்றும் சிறப்பம்சங்கள்",
     massTimesTitle: "வழிபாட்டு நேரங்கள்",
-    sundayMassLabel: "ஞாயிறு திருப்பலி",
-    weekdayMassLabel: "வாரநாட்களில் திருப்பலி",
     associationsTitle: "பங்கின் பங்கேற்பு அமைப்புகள்",
     vocationsTitle: "மண்ணின் இறையழைத்தல்கள்",
     grottosSchoolTitle: "குருசடி & பள்ளிக்கூடம்",
@@ -191,11 +190,11 @@ const translations: Record<Language, TranslationData> = {
     contactHeroTitle: "தொடர்பு கொள்ள",
     contactHeroDescription: "உங்களது கேள்விகள் அல்லது ஜெப வேண்டுதல்களுக்கு எங்களை எப்போது வேண்டுமானாலும் தொடர்பு கொள்ளலாம்.",
     addressTitle: "முகவரி",
-    addressText: "கிறிஸ்து அரசர் ஆலயம், இருதயபுரம், கேரளா, இந்தியா",
+    addressText: "கிறிஸ்து அரசர் ஆலயம், இருதயபுரம், குளப்புறம் அஞ்சல், கன்னியாகுமரி மாவட்டம், தமிழ்நாடு, இந்தியா",
     contactDetailsTitle: "தொடர்பு விவரங்கள்",
     contactDetailsText: "தொலைபேசி: 04651-243375\nமின்னஞ்சல்: contact@christthekingchurch.com",
     serviceTimesTitle: "வழிபாட்டு நேரங்கள்",
-    serviceTimesText: "ஞாயிறு திருப்பலி: காலை 8:00 மணி\nமாலை ஜெபம்: மாலை 6:00 மணி\nவிவிலிய படிப்பு: புதன் மாலை 7:00 மணி",
+    serviceTimesText: "ஞாயிறு திருப்பலி: காலை 9:30 மணி\nமாதம் இரண்டாம் சனிக்கிழமை: மாலை 7:00 மணி\nமாதம் மூன்றாம் வெள்ளிக்கிழமை: மாலை 7:00 மணி\nமற்ற நாட்களில்: காலை 7:00 மணி",
     formTitle: "செய்தி அனுப்பவும்",
     formNameLabel: "உங்கள் பெயர்",
     formEmailLabel: "மின்னஞ்சல் முகவரி",
@@ -216,16 +215,9 @@ const translations: Record<Language, TranslationData> = {
     noGalleriesMsg: "புகைப்பட தொகுப்புகள் எதுவும் இல்லை.",
     noImagesMsg: "இந்தத் தொகுப்பில் புகைப்படங்கள் எதுவும் இல்லை.",
     backToGalleryBtn: "தொகுப்புகளுக்குத் திரும்புக",
+    viewAlbumBtn: "தொகுப்பைக் காண்க",
   }
 };
-
-interface LanguageContextType {
-  language: Language;
-  toggleLanguage: () => void;
-  t: (key: string) => any;
-}
-
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
@@ -236,6 +228,12 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return 'en';
     }
   });
+
+  // Keep <html lang> in sync so screen readers and translation tools
+  // announce Tamil content correctly.
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
 
   const toggleLanguage = () => {
     setLanguage(prev => {
@@ -249,8 +247,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
-  const t = (key: string): any => {
-    return translations[language][key] || translations['en'][key] || key;
+  const t = (key: string): string => {
+    const value = translations[language][key] ?? translations.en[key];
+    return typeof value === 'string' ? value : key;
   };
 
   return (
@@ -258,12 +257,4 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       {children}
     </LanguageContext.Provider>
   );
-};
-
-export const useLanguage = () => {
-  const context = useContext(LanguageContext);
-  if (!context) {
-    throw new Error('useLanguage must be used within a LanguageProvider');
-  }
-  return context;
 };

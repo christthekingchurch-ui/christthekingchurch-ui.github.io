@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../context/languageContextValue';
 import {
   BookOpen, CalendarHeart, Cross, Users, MapPin, Clock,
   Award, GraduationCap, Sparkles, Building2, Compass, CheckSquare,
@@ -11,7 +11,6 @@ import { historyData } from '../data/historyData';
 export const History: React.FC = () => {
   const { t, language } = useLanguage();
   const [vis, setVis] = useState<Set<string>>(new Set());
-  const refs = useRef<Record<string, HTMLElement>>({});
 
   const folders = getFlatGalleryFolders();
   const heroBg = folders.length > 0 && folders[folders.length - 1]?.imagePaths[0]
@@ -44,7 +43,6 @@ export const History: React.FC = () => {
     };
   }, []);
 
-  const reg = (id: string) => (el: HTMLDivElement | null) => { if (el) refs.current[id] = el; };
   const v = (id: string) => vis.has(id);
 
   const assocIcons = [
@@ -59,7 +57,7 @@ export const History: React.FC = () => {
 
       {/* ═══════ HERO ═══════ */}
       <section className="relative h-[60vh] min-h-[420px] flex items-end overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${heroBg})`, filter: 'brightness(0.35)' }} />
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${heroBg}")`, filter: 'brightness(0.35)' }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 z-10" />
         <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-10 pb-16 w-full">
           <span className="glass-pill text-gold-300 text-[11px] font-sans font-semibold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full mb-3 inline-block">
@@ -73,17 +71,17 @@ export const History: React.FC = () => {
       </section>
 
       {/* ═══════ STATS ═══════ */}
-      <div ref={reg('stats')} data-reveal="stats" className={`max-w-[1400px] mx-auto px-6 md:px-10 py-16 transition-all duration-1000 ${v('stats') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div data-reveal="stats" className={`max-w-[1400px] mx-auto px-6 md:px-10 py-16 transition-all duration-1000 ${v('stats') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="flex flex-wrap justify-center gap-16 md:gap-24 border-b border-charcoal-100 dark:border-charcoal-700 pb-16">
           {[
-            { value: '1945', label: language === 'ta' ? 'தொடக்கம்' : 'Founded' },
+            { value: historyData.foundedYear, label: language === 'ta' ? 'தொடக்கம்' : 'Founded' },
             { value: historyData.families, label: language === 'ta' ? 'குடும்பங்கள்' : 'Families' },
             { value: historyData.anbiyams, label: language === 'ta' ? 'அன்பியங்கள்' : 'Anbiyams' },
-            { value: '13+', label: language === 'ta' ? 'அமைப்புகள்' : 'Organizations' },
+            { value: historyData.associations.length, label: language === 'ta' ? 'அமைப்புகள்' : 'Organizations' },
           ].map((stat, i) => (
             <div key={i} className="text-center">
               <h3 className="text-4xl md:text-5xl font-serif text-charcoal-700 dark:text-ivory-100 mb-2">{stat.value}</h3>
-              <span className="text-[11px] font-sans font-bold uppercase tracking-[0.2em] text-charcoal-500 dark:text-charcoal-400">{stat.label}</span>
+              <span className="text-[11px] font-sans font-bold uppercase tracking-[0.2em] text-charcoal-500 dark:text-charcoal-200">{stat.label}</span>
             </div>
           ))}
         </div>
@@ -91,7 +89,7 @@ export const History: React.FC = () => {
 
       {/* ═══════ INTRO ═══════ */}
       <section className="py-20 md:py-32">
-        <div ref={reg('intro')} data-reveal="intro" className={`max-w-[1400px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center transition-all duration-1000 ${v('intro') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+        <div data-reveal="intro" className={`max-w-[1400px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center transition-all duration-1000 ${v('intro') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           <div>
             <span className="text-gold-500 text-[11px] font-sans font-semibold uppercase tracking-[0.3em] mb-6 block">The Beginning</span>
             <h2 className="text-charcoal-700 dark:text-ivory-100 mb-8">{t('historyIntroTitle') || 'The Beginning'}</h2>
@@ -110,7 +108,7 @@ export const History: React.FC = () => {
 
       {/* ═══════ FACTS & MASS TIMINGS ═══════ */}
       <section className="py-24 bg-ivory-100 dark:bg-charcoal-900">
-        <div ref={reg('facts')} data-reveal="facts" className={`max-w-[1100px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 transition-all duration-1000 ${v('facts') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+        <div data-reveal="facts" className={`max-w-[1100px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 transition-all duration-1000 ${v('facts') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
           {/* Quick Facts */}
           <div className="glass-card p-6 md:p-8 rounded-2xl">
             <h3 className="text-2xl font-serif text-charcoal-700 dark:text-ivory-100 mb-6 flex items-center gap-3">
@@ -127,7 +125,7 @@ export const History: React.FC = () => {
                 { label: t('postOfficeLabel'), value: language === 'ta' ? historyData.postOfficeTa : historyData.postOffice }
               ].map((item, i) => (
                 <div key={i} className="flex justify-between py-3">
-                  <span className="text-charcoal-300 dark:text-charcoal-400 text-sm font-medium">{item.label}</span>
+                  <span className="text-charcoal-500 dark:text-charcoal-200 text-sm font-medium">{item.label}</span>
                   <span className="text-charcoal-700 dark:text-ivory-100 font-medium text-right">{item.value}</span>
                 </div>
               ))}
@@ -142,20 +140,21 @@ export const History: React.FC = () => {
                 {t('massTimesTitle')}
               </h3>
               <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-4 glass-panel p-5 rounded-xl">
-                  <CalendarHeart className="text-gold-500 shrink-0" size={22} />
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-1">{t('sundayMassLabel')}</p>
-                    <p className="text-charcoal-700 dark:text-ivory-100 font-semibold">{language === 'ta' ? historyData.sundayMassTa : historyData.sundayMass}</p>
+                {historyData.massSchedule.map((mass, i) => (
+                  <div key={mass.label} className="flex items-center gap-4 glass-panel p-5 rounded-xl">
+                    {i === 0
+                      ? <CalendarHeart className="text-gold-500 shrink-0" size={22} />
+                      : <Clock className="text-gold-500 shrink-0" size={22} />}
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-200 font-semibold mb-1">
+                        {language === 'ta' ? mass.labelTa : mass.label}
+                      </p>
+                      <p className="text-charcoal-700 dark:text-ivory-100 font-semibold">
+                        {language === 'ta' ? mass.timeTa : mass.time}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-4 glass-panel p-5 rounded-xl">
-                  <Clock className="text-gold-500 shrink-0" size={22} />
-                  <div>
-                    <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-1">{t('weekdayMassLabel')}</p>
-                    <p className="text-charcoal-700 dark:text-ivory-100 font-semibold">{language === 'ta' ? historyData.weekdayMassTa : historyData.weekdayMass}</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
 
@@ -181,7 +180,7 @@ export const History: React.FC = () => {
             </span>
             <h2 className="text-charcoal-700 dark:text-ivory-100">{t('associationsTitle')}</h2>
           </div>
-          <div ref={reg('assoc')} data-reveal="assoc" className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 transition-all duration-1000 ${v('assoc') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
+          <div data-reveal="assoc" className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 transition-all duration-1000 ${v('assoc') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}>
             {historyData.associations.map((assoc, idx) => (
               <div key={idx} className="glass-card flex items-center gap-4 py-4 px-5 rounded-xl group">
                 <div className="text-gold-500 shrink-0">{assocIcons[idx] || <CheckSquare size={18} />}</div>
@@ -213,7 +212,6 @@ export const History: React.FC = () => {
               return (
                 <div
                   key={index}
-                  ref={reg(`tl-${index}`)}
                   data-reveal={`tl-${index}`}
                   className={`relative flex items-start mb-14 last:mb-0 transition-all duration-1000 ${v(`tl-${index}`) ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${isLeft ? 'md:flex-row-reverse' : 'md:flex-row'}`}
                 >

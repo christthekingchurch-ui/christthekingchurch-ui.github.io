@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/languageContextValue';
 import { MapPin, PhoneCall, Clock, Send, CheckCircle2, MessageCircle } from 'lucide-react';
+import { historyData } from '../data/historyData';
 
 export const Contact: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -49,6 +50,7 @@ export const Contact: React.FC = () => {
           {/* Map */}
           <div className="h-[450px] lg:h-auto overflow-hidden rounded-3xl border border-charcoal-100 dark:border-charcoal-700 shadow-lg">
             <iframe
+              title="Map showing Christ the King Church, Iruthyapuram"
               src="https://maps.google.com/maps?q=Christ+The+King+Church+Irruthayapuram+(Roman+Catholic)&t=&z=15&ie=UTF8&iwloc=&output=embed"
               className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-700"
               allowFullScreen={true}
@@ -61,25 +63,31 @@ export const Contact: React.FC = () => {
             <div className="flex items-start gap-5">
               <PhoneCall size={22} className="text-gold-500 mt-1 shrink-0" />
               <div>
-                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-400 font-bold mb-1">Call Us</p>
-                <p className="text-charcoal-700 dark:text-ivory-100 text-lg font-semibold">04651-243375</p>
+                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-200 font-bold mb-1">Call Us</p>
+                <a href="tel:+914651243375" className="text-charcoal-700 dark:text-ivory-100 text-lg font-semibold hover:text-gold-600 transition-colors">04651-243375</a>
               </div>
             </div>
 
             <div className="flex items-start gap-5">
               <MapPin size={22} className="text-gold-500 mt-1 shrink-0" />
               <div>
-                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-400 font-bold mb-1">Address</p>
-                <p className="text-charcoal-700 dark:text-ivory-100 font-semibold">Christ the King Church,<br/>Iruthyapuram, Kerala, India</p>
+                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-200 font-bold mb-1">Address</p>
+                <p className="text-charcoal-700 dark:text-ivory-100 font-semibold">Christ the King Church,<br/>Iruthyapuram, Kulapuram P.O.,<br/>Kanyakumari District, Tamil Nadu, India</p>
               </div>
             </div>
 
             <div className="flex items-start gap-5">
               <Clock size={22} className="text-gold-500 mt-1 shrink-0" />
               <div>
-                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-400 font-bold mb-1">Mass Schedule</p>
-                <p className="text-charcoal-700 dark:text-ivory-100 font-semibold mb-1">Sunday: 8:00 AM</p>
-                <p className="text-charcoal-500 dark:text-charcoal-300 text-sm">Evening Prayer: 6:00 PM • Bible Study: Wed 7:00 PM</p>
+                <p className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-200 font-bold mb-2">{t('massTimesTitle')}</p>
+                <ul className="flex flex-col gap-1">
+                  {historyData.massSchedule.map(mass => (
+                    <li key={mass.label} className="flex flex-wrap gap-x-2 text-charcoal-700 dark:text-ivory-100">
+                      <span className="font-semibold">{language === 'ta' ? mass.labelTa : mass.label}:</span>
+                      <span>{language === 'ta' ? mass.timeTa : mass.time}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
@@ -89,7 +97,7 @@ export const Contact: React.FC = () => {
               >
                 <MapPin size={16} /> Directions
               </a>
-              <a href="https://wa.me/9104651243375" target="_blank" rel="noopener noreferrer"
+              <a href="https://wa.me/914651243375" target="_blank" rel="noopener noreferrer"
                 className="flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white text-sm font-semibold hover:bg-[#1da851] transition-all"
               >
                 <MessageCircle size={16} /> WhatsApp
@@ -119,26 +127,26 @@ export const Contact: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-8">
             <div>
-              <label className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-3 block">{t('formNameLabel')}</label>
+              <label htmlFor="contact-name" className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-200 font-semibold mb-3 block">{t('formNameLabel')}</label>
               <input
-                type="text" name="name" value={formData.name} onChange={handleInputChange} required
-                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors placeholder:text-charcoal-200 dark:placeholder:text-charcoal-500"
+                id="contact-name" type="text" name="name" autoComplete="name" value={formData.name} onChange={handleInputChange} required
+                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors placeholder:text-charcoal-300 dark:placeholder:text-charcoal-500"
                 placeholder="John Doe"
               />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-3 block">{t('formEmailLabel')}</label>
+              <label htmlFor="contact-email" className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-200 font-semibold mb-3 block">{t('formEmailLabel')}</label>
               <input
-                type="email" name="email" value={formData.email} onChange={handleInputChange} required
-                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors placeholder:text-charcoal-200 dark:placeholder:text-charcoal-500"
+                id="contact-email" type="email" name="email" autoComplete="email" value={formData.email} onChange={handleInputChange} required
+                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors placeholder:text-charcoal-300 dark:placeholder:text-charcoal-500"
                 placeholder="john@example.com"
               />
             </div>
             <div>
-              <label className="text-[11px] uppercase tracking-[0.15em] text-charcoal-300 font-semibold mb-3 block">{t('formMessageLabel')}</label>
+              <label htmlFor="contact-message" className="text-[11px] uppercase tracking-[0.15em] text-charcoal-500 dark:text-charcoal-200 font-semibold mb-3 block">{t('formMessageLabel')}</label>
               <textarea
-                name="message" value={formData.message} onChange={handleInputChange} rows={4} required
-                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors resize-none placeholder:text-charcoal-200 dark:placeholder:text-charcoal-500"
+                id="contact-message" name="message" value={formData.message} onChange={handleInputChange} rows={4} required
+                className="w-full bg-transparent border-b border-charcoal-200 dark:border-charcoal-600 py-3 text-charcoal-700 dark:text-ivory-100 focus:border-gold-400 outline-none transition-colors resize-none placeholder:text-charcoal-300 dark:placeholder:text-charcoal-500"
                 placeholder="Your message or prayer request..."
               />
             </div>

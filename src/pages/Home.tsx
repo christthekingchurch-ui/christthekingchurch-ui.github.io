@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/languageContextValue';
 import { ArrowRight, ChevronDown, Clock, BookOpen, Heart, Users } from 'lucide-react';
 import { getPreviewImages } from '../data/galleryData';
 
@@ -13,7 +13,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
   const [heroIdx, setHeroIdx] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
-  const sectionRefs = useRef<Record<string, HTMLElement>>({});
 
   useEffect(() => {
     const interval = setInterval(() => setHeroIdx(prev => (prev + 1) % heroImages.length), 7000);
@@ -49,17 +48,13 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
     };
   }, []);
 
-  const ref = (id: string) => (el: HTMLDivElement | null) => {
-    if (el) sectionRefs.current[id] = el;
-  };
-
   const vis = (id: string) => visibleSections.has(id);
 
   return (
     <div className="min-h-screen bg-ivory-50 dark:bg-charcoal-800">
 
       {/* ═══════ HERO — Full-viewport cinematic ═══════ */}
-      <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-32 pb-32">
         {/* Ken Burns background */}
         {heroImages.map((src, i) => (
           <div
@@ -109,16 +104,19 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
         </div>
 
         {/* Scroll cue */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-white/40 animate-bounce">
-          <span className="text-[10px] uppercase tracking-[0.2em] font-sans">Scroll</span>
-          <ChevronDown size={20} />
+        {/* (animate-bounce sets its own transform, so it lives on an inner element
+             and centring is handled by the full-width wrapper instead) */}
+        <div className="absolute bottom-10 inset-x-0 z-20 flex justify-center pointer-events-none">
+          <div className="flex flex-col items-center gap-2 text-white/40 animate-bounce">
+            <span className="text-[10px] uppercase tracking-[0.2em] font-sans">Scroll</span>
+            <ChevronDown size={20} />
+          </div>
         </div>
       </section>
 
       {/* ═══════ ABOUT — Editorial split ═══════ */}
       <section className="py-28 md:py-40">
         <div
-          ref={ref('about')}
           data-reveal="about"
           className={`max-w-[1400px] mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center transition-all duration-[1200ms] ${vis('about') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
         >
@@ -166,7 +164,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
 
           <div
-            ref={ref('pillars')}
             data-reveal="pillars"
             className={`grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 transition-all duration-[1200ms] ${vis('pillars') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
           >
@@ -195,7 +192,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
 
           <div
-            ref={ref('services')}
             data-reveal="services"
             className={`flex flex-col divide-y divide-charcoal-100 dark:divide-charcoal-700 transition-all duration-[1200ms] ${vis('services') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
           >
@@ -226,7 +222,6 @@ export const Home: React.FC<HomeProps> = ({ onNavigate }) => {
           </div>
 
           <div
-            ref={ref('gallery')}
             data-reveal="gallery"
             className={`transition-all duration-[1200ms] ${vis('gallery') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
           >

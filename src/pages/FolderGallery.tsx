@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/languageContextValue';
 import { galleryData } from '../data/galleryData';
 import { ArrowLeft, ChevronLeft, ChevronRight, X, AlertCircle } from 'lucide-react';
 
@@ -22,9 +22,10 @@ export const FolderGallery: React.FC<FolderGalleryProps> = ({ year, folderKey, o
       else if (e.key === 'ArrowRight') setActivePhotoIndex(prev => prev !== null ? (prev + 1) % folder.images.length : null);
       else if (e.key === 'ArrowLeft') setActivePhotoIndex(prev => prev !== null ? (prev - 1 + folder.images.length) % folder.images.length : null);
     };
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = ''; };
+    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = prevOverflow; };
   }, [activePhotoIndex, folder]);
 
   if (!folder) {
@@ -61,7 +62,7 @@ export const FolderGallery: React.FC<FolderGalleryProps> = ({ year, folderKey, o
       <section className="relative h-[55vh] min-h-[380px] flex items-end overflow-hidden">
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${folder.imagePaths[0] || '/images/hero-bg1.jpg'})`, filter: 'brightness(0.35)' }}
+          style={{ backgroundImage: `url("${folder.imagePaths[0] || '/images/hero-bg1.jpg'}")`, filter: 'brightness(0.35)' }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 z-10" />
         <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-10 pb-14 w-full">
@@ -119,16 +120,16 @@ export const FolderGallery: React.FC<FolderGalleryProps> = ({ year, folderKey, o
       {/* Lightbox */}
       {activePhotoIndex !== null && (
         <div className="fixed inset-0 z-[100] bg-charcoal-900/98 flex flex-col items-center justify-center" onClick={() => setActivePhotoIndex(null)}>
-          <button className="absolute top-6 right-6 text-white/50 hover:text-white p-2 transition-colors" onClick={() => setActivePhotoIndex(null)}>
+          <button aria-label="Close image viewer" className="absolute top-6 right-6 text-white/50 hover:text-white p-2 transition-colors" onClick={() => setActivePhotoIndex(null)}>
             <X size={28} />
           </button>
 
           {folder.images.length > 1 && (
             <>
-              <button className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors" onClick={handlePrev}>
+              <button aria-label="Previous image" className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors" onClick={handlePrev}>
                 <ChevronLeft size={32} />
               </button>
-              <button className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors" onClick={handleNext}>
+              <button aria-label="Next image" className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors" onClick={handleNext}>
                 <ChevronRight size={32} />
               </button>
             </>

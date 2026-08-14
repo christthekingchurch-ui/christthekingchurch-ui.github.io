@@ -1,12 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useEffect, useState } from 'react';
+import { useLanguage } from '../context/languageContextValue';
 import priestsData from '../data/priests.json';
+import { historyData } from '../data/historyData';
 import { CalendarDays, Church, Crown, Star, Users } from 'lucide-react';
 
 export const Priests: React.FC = () => {
   const { t, language } = useLanguage();
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const currentPriest = priestsData[priestsData.length - 1];
+  const pastPriests = priestsData.slice(0, -1);
+  const currentName = language === 'ta' ? (currentPriest.nameTa || currentPriest.name) : currentPriest.name;
+  const currentDesc = language === 'ta' ? (currentPriest.descriptionTa || currentPriest.description) : currentPriest.description;
+  const pastPriestCount = pastPriests.length;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -22,20 +28,14 @@ export const Priests: React.FC = () => {
     document.querySelectorAll('[data-idx]').forEach(el => observer.observe(el));
 
     const fallbackTimer = setTimeout(() => {
-      const allIndices = pastPriests.map((_, i) => i);
-      setVisibleCards(new Set(allIndices));
+      setVisibleCards(new Set(Array.from({ length: pastPriestCount }, (_, i) => i)));
     }, 1200);
 
     return () => {
       observer.disconnect();
       clearTimeout(fallbackTimer);
     };
-  }, []);
-
-  const currentPriest = priestsData[priestsData.length - 1];
-  const pastPriests = priestsData.slice(0, -1);
-  const currentName = language === 'ta' ? (currentPriest.nameTa || currentPriest.name) : currentPriest.name;
-  const currentDesc = language === 'ta' ? (currentPriest.descriptionTa || currentPriest.description) : currentPriest.description;
+  }, [pastPriestCount]);
 
   return (
     <div className="bg-ivory-50 dark:bg-charcoal-800 min-h-screen">
@@ -104,7 +104,7 @@ export const Priests: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <Users size={20} className="text-gold-500" />
-                  <span className="text-charcoal-600 dark:text-charcoal-200 text-sm font-medium">{language === 'ta' ? '284 குடும்பங்கள்' : '284 Families'}</span>
+                  <span className="text-charcoal-600 dark:text-charcoal-200 text-sm font-medium">{historyData.families} {language === 'ta' ? 'குடும்பங்கள்' : 'Families'}</span>
                 </div>
               </div>
             </div>
@@ -132,7 +132,6 @@ export const Priests: React.FC = () => {
               return (
                 <div
                   key={priest.id}
-                  ref={el => { cardRefs.current[index] = el; }}
                   data-idx={index}
                   className={`glass-card p-4 rounded-2xl group transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                   style={{ transitionDelay: `${(index % 4) * 100}ms` }}

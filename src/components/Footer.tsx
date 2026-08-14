@@ -1,13 +1,14 @@
 import React from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from '../context/languageContextValue';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { historyData } from '../data/historyData';
 
 interface FooterProps {
   onNavigate: (page: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   const handleLinkClick = (page: string) => {
     onNavigate(page);
@@ -24,7 +25,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <img src="/images/logo.png" alt="Church Logo" className="w-10 h-10 object-contain" />
               <span className="font-serif text-xl font-semibold text-ivory-100 tracking-tight">{t('churchName')}</span>
             </div>
-            <p className="text-charcoal-400 text-sm leading-relaxed max-w-sm">
+            <p className="text-charcoal-200 text-sm leading-relaxed max-w-sm">
               {t('footerDesc')}
             </p>
           </div>
@@ -53,15 +54,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="flex flex-col gap-4 text-sm">
               <li className="flex gap-3 items-start">
                 <MapPin size={18} className="text-gold-500 shrink-0 mt-0.5" />
-                <span className="text-charcoal-300">Iruthyapuram, Kerala, India</span>
+                <span className="text-charcoal-300">Iruthyapuram, Kanyakumari District,<br/>Tamil Nadu, India</span>
               </li>
               <li className="flex gap-3 items-center">
                 <Phone size={18} className="text-gold-500 shrink-0" />
-                <span className="text-charcoal-300">04651-243375</span>
+                <a href="tel:+914651243375" className="text-charcoal-300 hover:text-gold-400 transition-colors">04651-243375</a>
               </li>
               <li className="flex gap-3 items-center">
                 <Mail size={18} className="text-gold-500 shrink-0" />
-                <span className="text-charcoal-300 break-all">contact@christthekingchurch.com</span>
+                <a href="mailto:contact@christthekingchurch.com" className="text-charcoal-300 hover:text-gold-400 transition-colors break-all">contact@christthekingchurch.com</a>
               </li>
             </ul>
           </div>
@@ -72,18 +73,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="flex gap-3 items-start text-sm">
               <Clock size={18} className="text-gold-500 shrink-0 mt-0.5" />
               <div className="flex flex-col gap-2.5 w-full">
-                <div className="flex justify-between gap-4 border-b border-charcoal-700 pb-2">
-                  <span className="text-ivory-100 font-medium">Sunday Mass</span>
-                  <span className="text-charcoal-300">8:00 AM</span>
-                </div>
-                <div className="flex justify-between gap-4 border-b border-charcoal-700 pb-2">
-                  <span className="text-ivory-100 font-medium">Evening Prayer</span>
-                  <span className="text-charcoal-300">6:00 PM</span>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span className="text-ivory-100 font-medium">Bible Study</span>
-                  <span className="text-charcoal-300">Wed 7:00 PM</span>
-                </div>
+                {historyData.massSchedule.map((mass, i) => (
+                  <div
+                    key={mass.label}
+                    className={`flex justify-between gap-4 ${i < historyData.massSchedule.length - 1 ? 'border-b border-charcoal-700 pb-2' : ''}`}
+                  >
+                    <span className="text-ivory-100 font-medium">{language === 'ta' ? mass.labelTa : mass.label}</span>
+                    <span className="text-charcoal-300 whitespace-nowrap">{language === 'ta' ? mass.timeTa : mass.time}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -91,7 +89,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-charcoal-700 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-charcoal-500 text-xs">{t('footerCopy')}</p>
+          <p className="text-charcoal-300 text-xs">{t('footerCopy')}</p>
           
           <div className="flex gap-3">
             <a 

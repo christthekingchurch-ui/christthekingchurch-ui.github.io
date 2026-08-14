@@ -8,15 +8,22 @@ import { FolderGallery } from './pages/FolderGallery';
 import { Contact } from './pages/Contact';
 import { Priests } from './pages/Priests';
 
+const PAGES = ['home', 'history', 'gallery', 'priests', 'contact'] as const;
+
+export interface RouteParams {
+  year: string;
+  folderKey: string;
+}
+
 function App() {
   const [currentPage, setCurrentPage] = useState<string>('home');
-  const [currentParams, setCurrentParams] = useState<any>(null);
+  const [currentParams, setCurrentParams] = useState<RouteParams | null>(null);
 
   // Custom Hash Router
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      
+
       if (!hash || hash === 'home') {
         setCurrentPage('home');
         setCurrentParams(null);
@@ -27,18 +34,18 @@ function App() {
         const parts = hash.split('/');
         if (parts.length >= 3) {
           setCurrentPage('gallery-folder');
-          setCurrentParams({ 
-            year: parts[1], 
-            folderKey: decodeURIComponent(parts[2]) 
+          setCurrentParams({
+            year: decodeURIComponent(parts[1]),
+            folderKey: decodeURIComponent(parts[2])
           });
           return;
         }
       }
 
-      if (['home', 'history', 'gallery', 'priests', 'contact'].includes(hash)) {
-        setCurrentPage(hash);
-        setCurrentParams(null);
-      }
+      // Anything unrecognised falls back to home rather than leaving the
+      // previously rendered page on screen.
+      setCurrentPage((PAGES as readonly string[]).includes(hash) ? hash : 'home');
+      setCurrentParams(null);
     };
 
     window.addEventListener('hashchange', handleHashChange);
@@ -48,12 +55,13 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
-  const handleNavigate = (page: string, params?: any) => {
+  const handleNavigate = (page: string, params?: RouteParams) => {
     if (page === 'gallery-folder' && params) {
-      window.location.hash = `gallery-folder/${params.year}/${encodeURIComponent(params.folderKey)}`;
+      window.location.hash = `gallery-folder/${encodeURIComponent(params.year)}/${encodeURIComponent(params.folderKey)}`;
     } else {
       window.location.hash = page;
     }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const renderPage = () => {

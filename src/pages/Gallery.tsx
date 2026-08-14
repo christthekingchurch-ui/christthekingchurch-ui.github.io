@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useState, useEffect } from 'react';
+import { useLanguage } from '../context/languageContextValue';
 import { galleryData, getFlatGalleryFolders, getAllImages } from '../data/galleryData';
 import type { FlatImage } from '../data/galleryData';
-import { Image, X, ChevronLeft, ChevronRight, Grid3x3, FolderOpen, ZoomIn } from 'lucide-react';
+import { Image, X, ChevronLeft, ChevronRight, Grid3x3, FolderOpen, ZoomIn, ArrowRight } from 'lucide-react';
+import type { RouteParams } from '../App';
 
 interface GalleryProps {
-  onNavigate: (page: string, params?: any) => void;
+  onNavigate: (page: string, params?: RouteParams) => void;
 }
 
 type ViewMode = 'folders' | 'all';
 
-export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => {
+export const Gallery: React.FC<GalleryProps> = ({ onNavigate }) => {
   const { t } = useLanguage();
   const folders = getFlatGalleryFolders();
   const allImages = getAllImages();
@@ -31,31 +32,32 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
       else if (e.key === 'ArrowRight') setLightboxIdx(prev => prev !== null ? (prev + 1) % lightboxImages.length : null);
       else if (e.key === 'ArrowLeft') setLightboxIdx(prev => prev !== null ? (prev - 1 + lightboxImages.length) % lightboxImages.length : null);
     };
+    const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleKeyDown);
-    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = ''; };
+    return () => { window.removeEventListener('keydown', handleKeyDown); document.body.style.overflow = prevOverflow; };
   }, [lightboxIdx, lightboxImages]);
 
-  const openLightbox = useCallback((images: FlatImage[], startIdx: number) => {
+  const openLightbox = (images: FlatImage[], startIdx: number) => {
     setLightboxImages(images);
     setLightboxIdx(startIdx);
-  }, []);
+  };
 
-  const openFolderLightbox = useCallback((year: string, folderKey: string, imgIdx: number) => {
+  const openFolderLightbox = (year: string, folderKey: string, imgIdx: number) => {
     const folder = galleryData[year]?.[folderKey];
     if (!folder) return;
     const imgs: FlatImage[] = folder.imagePaths.map((path, i) => ({
       src: path, alt: `${folder.displayName} - ${i + 1}`, year, folder: folderKey,
     }));
     openLightbox(imgs, imgIdx);
-  }, [openLightbox]);
+  };
 
   return (
     <div className="bg-ivory-50 dark:bg-charcoal-800 min-h-screen">
 
       {/* ═══════ HERO ═══════ */}
       <section className="relative h-[60vh] min-h-[420px] flex items-end overflow-hidden">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${folders[0]?.imagePaths[0] || '/images/hero-bg1.jpg'})`, filter: 'brightness(0.35)' }} />
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url("${folders[0]?.imagePaths[0] || '/images/hero-bg1.jpg'}")`, filter: 'brightness(0.35)' }} />
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20 z-10" />
         <div className="relative z-20 max-w-[1400px] mx-auto px-6 md:px-10 pb-16 w-full">
           <span className="glass-pill text-gold-300 text-[11px] font-sans font-semibold uppercase tracking-[0.3em] px-4 py-1.5 rounded-full mb-3 inline-block">
@@ -69,7 +71,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
       </section>
 
       {/* ═══════ TOOLBAR ═══════ */}
-      <section className="sticky top-[78px] z-30 glass-nav py-4">
+      <section className="sticky top-[72px] z-30 glass-nav py-4">
         <div className="max-w-[1400px] mx-auto px-6 md:px-10 flex flex-col md:flex-row justify-between items-center gap-4">
           {/* View toggle */}
           <div className="flex border border-charcoal-100 dark:border-charcoal-600 rounded-lg overflow-hidden">
@@ -118,13 +120,20 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
                     <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between border-b border-charcoal-50 dark:border-charcoal-700 pb-4">
                       <div>
                         <h2 className="text-2xl font-serif text-charcoal-700 dark:text-ivory-100 mb-1">{folder.displayName}</h2>
-                        <p className="text-charcoal-300 dark:text-charcoal-400 text-sm flex items-center gap-3">
+                        <p className="text-charcoal-500 dark:text-charcoal-200 text-sm flex items-center gap-3">
                           <span className="text-gold-500 font-semibold">{folder.year}</span>
                           <span>•</span>
                           <span>{folder.imagePaths.length} photos</span>
                           {folder.description && <><span>•</span><span>{folder.description}</span></>}
                         </p>
                       </div>
+                      <button
+                        className="self-start md:self-auto mt-4 md:mt-0 inline-flex items-center gap-2 text-gold-600 dark:text-gold-400 text-[13px] font-semibold uppercase tracking-[0.15em] group"
+                        onClick={() => onNavigate('gallery-folder', { year: folder.year, folderKey: folder.folderKey })}
+                      >
+                        {t('viewAlbumBtn')}
+                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      </button>
                     </div>
                     <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
                       {folder.imagePaths.map((src, imgIdx) => (
@@ -175,19 +184,21 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
       {/* ═══════ LIGHTBOX ═══════ */}
       {lightboxIdx !== null && lightboxImages.length > 0 && (
         <div className="fixed inset-0 z-[100] bg-charcoal-900/98 flex flex-col items-center justify-center" onClick={() => setLightboxIdx(null)}>
-          <button className="absolute top-6 right-6 text-white/50 hover:text-white p-2 transition-colors" onClick={() => setLightboxIdx(null)}>
+          <button aria-label="Close image viewer" className="absolute top-6 right-6 text-white/50 hover:text-white p-2 transition-colors" onClick={() => setLightboxIdx(null)}>
             <X size={28} />
           </button>
 
           {lightboxImages.length > 1 && (
             <>
               <button
+                aria-label="Previous image"
                 className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors"
                 onClick={e => { e.stopPropagation(); setLightboxIdx(prev => prev !== null ? (prev - 1 + lightboxImages.length) % lightboxImages.length : null); }}
               >
                 <ChevronLeft size={32} />
               </button>
               <button
+                aria-label="Next image"
                 className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white p-3 transition-colors"
                 onClick={e => { e.stopPropagation(); setLightboxIdx(prev => prev !== null ? (prev + 1) % lightboxImages.length : null); }}
               >
@@ -209,6 +220,7 @@ export const Gallery: React.FC<GalleryProps> = ({ onNavigate: _onNavigate }) => 
               {lightboxImages.map((img, i) => (
                 <button
                   key={i}
+                  aria-label={`Show image ${i + 1}`}
                   className={`shrink-0 w-14 h-14 overflow-hidden border-2 transition-all ${i === lightboxIdx ? 'border-gold-400 opacity-100' : 'border-transparent opacity-40 hover:opacity-80'}`}
                   onClick={() => setLightboxIdx(i)}
                 >
